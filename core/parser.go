@@ -1,11 +1,29 @@
+// Copyright (C) 2026 John Doe
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package core
 
 import (
+	"fmt"
 	"os"
 	"regexp"
 	"strings"
 
+	"github.com/antlr4-go/antlr/v4"
 	messages "github.com/cucumber/messages/go/v28"
+	specantlr "github.com/experimental-software/gherkin/core/antlr"
 	"github.com/experimental-software/gherkin/utils"
 )
 
@@ -30,167 +48,76 @@ func matchStepComment(line string) (keyword, text string, ok bool) {
 	return kw + " ", strings.TrimSpace(m[2]), true
 }
 
-// extractQuotedName returns the first single- or double-quoted string in s.
-func extractQuotedName(s string) (string, bool) {
-	for _, q := range []byte{'\'', '"'} {
-		start := strings.IndexByte(s, q)
-		if start < 0 {
-			continue
-		}
-		end := strings.IndexByte(s[start+1:], q)
-		if end < 0 {
-			continue
-		}
-		return s[start+1 : start+1+end], true
-	}
-	return "", false
-}
-
 const (
 	frameDescribe   = "describe"
 	frameIt         = "it"
 	frameBeforeEach = "beforeEach"
 )
 
+// frame is the intermediate representation shared between the ANTLR-driven
+// visitor (see spec_visitor.go) and the feature-document emitter below. It
+// captures a single describe / it / beforeEach node together with anything
+// that has been discovered inside it while walking the parse tree.
 type frame struct {
 	kind       string
 	name       string   // describe or it title
 	ancestors  []string // ancestor describe names (for describe frames)
-	depth      int      // brace depth when this frame was opened
 	steps      []*messages.Step
 	scenarios  []*messages.Scenario
 	background []*messages.Step
 	children   []*frame // nested describe frames
 }
 
+// collectingErrorListener records ANTLR syntax errors so that ParseSpecFile
+// can preserve the "return whatever we managed to parse, even on error"
+// contract that `cmd/rev.go` relies on.
+type collectingErrorListener struct {
+	*antlr.DefaultErrorListener
+	errs []string
+}
+
+func (l *collectingErrorListener) SyntaxError(_ antlr.Recognizer, _ interface{}, line, col int, msg string, _ antlr.RecognitionException) {
+	l.errs = append(l.errs, fmt.Sprintf("line %d:%d %s", line, col, msg))
+}
+
 // ParseSpecFile reads a Jasmine *.spec.ts file and converts its
-// describe/it/beforeEach structure into GherkinDocuments.
+// describe/it/beforeEach structure into GherkinDocuments. It uses an
+// ANTLR-generated parser (see core/antlr/SpecGrammar.g4) driving a small
+// tree visitor that emits the same *frame tree the previous line-scanner
+// produced, so downstream emission logic is unchanged.
 func ParseSpecFile(path string, relaxed bool) ([]*messages.GherkinDocument, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
-	lines := strings.Split(string(data), "\n")
 
-	var stack []*frame
-	var topLevelDescribes []*frame
-	braceDepth := 0
+	input := antlr.NewInputStream(string(data))
+	lexer := specantlr.NewSpecGrammarLexer(input)
+	lexer.RemoveErrorListeners()
+	lexErrs := &collectingErrorListener{DefaultErrorListener: antlr.NewDefaultErrorListener()}
+	lexer.AddErrorListener(lexErrs)
 
-	for _, line := range lines {
-		trimmed := strings.TrimSpace(line)
+	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+	parser := specantlr.NewSpecGrammarParser(tokens)
+	parser.RemoveErrorListeners()
+	parseErrs := &collectingErrorListener{DefaultErrorListener: antlr.NewDefaultErrorListener()}
+	parser.AddErrorListener(parseErrs)
 
-		// Detect block openers before counting braces on this line.
-		var opened *frame
-		if strings.Contains(trimmed, "describe(") {
-			if name, ok := extractQuotedName(trimmed[strings.Index(trimmed, "describe(")+len("describe("):]); ok {
-				// ancestor names = all current describe frame names
-				var ancestors []string
-				for _, f := range stack {
-					if f.kind == frameDescribe {
-						ancestors = append(ancestors, f.name)
-					}
-				}
-				opened = &frame{kind: frameDescribe, name: name, ancestors: ancestors}
-			}
-		} else if strings.Contains(trimmed, "beforeEach(") {
-			opened = &frame{kind: frameBeforeEach}
-		} else if strings.Contains(trimmed, "it(") {
-			// avoid matching "fit(" or "xit(" etc. by checking the char before "it("
-			idx := strings.Index(trimmed, "it(")
-			if idx == 0 || !isIdentChar(trimmed[idx-1]) {
-				if name, ok := extractQuotedName(trimmed[idx+len("it("):]); ok {
-					opened = &frame{kind: frameIt, name: name}
-				}
-			}
-		}
+	tree := parser.Program()
 
-		// Count braces on this line.
-		for _, ch := range trimmed {
-			if ch == '{' {
-				braceDepth++
-			} else if ch == '}' {
-				braceDepth--
-			}
-		}
-
-		// If we opened a new frame, record its depth after counting (so we
-		// know when the matching closing brace brings us back here).
-		if opened != nil {
-			opened.depth = braceDepth
-			stack = append(stack, opened)
-		}
-
-		// Collect step comments for it/beforeEach frames.
-		if len(stack) > 0 {
-			top := stack[len(stack)-1]
-			if top.kind == frameIt || top.kind == frameBeforeEach {
-				if kw, txt, ok := matchStepComment(line); ok {
-					top.steps = append(top.steps, &messages.Step{Keyword: kw, Text: txt})
-				}
-			}
-		}
-
-		// Check whether the top frame has closed (brace depth returned to its open depth - 1).
-		for len(stack) > 0 {
-			top := stack[len(stack)-1]
-			if braceDepth >= top.depth {
-				break
-			}
-			// Pop frame.
-			stack = stack[:len(stack)-1]
-
-			switch top.kind {
-			case frameIt:
-				if len(top.steps) > 0 || relaxed {
-					scenario := &messages.Scenario{
-						Name:  normalizeScenarioTitle(top.name),
-						Steps: top.steps,
-					}
-					// Attach to nearest enclosing describe.
-					for i := len(stack) - 1; i >= 0; i-- {
-						if stack[i].kind == frameDescribe {
-							stack[i].scenarios = append(stack[i].scenarios, scenario)
-							break
-						}
-					}
-				}
-
-			case frameBeforeEach:
-				var bgSteps []*messages.Step
-				for _, s := range top.steps {
-					kw := strings.TrimRight(s.Keyword, " ")
-					if strings.EqualFold(kw, "given") || strings.EqualFold(kw, "and") {
-						bgSteps = append(bgSteps, s)
-					}
-				}
-				if len(bgSteps) > 0 {
-					for i := len(stack) - 1; i >= 0; i-- {
-						if stack[i].kind == frameDescribe {
-							stack[i].background = bgSteps
-							break
-						}
-					}
-				}
-
-			case frameDescribe:
-				if len(top.ancestors) > 0 {
-					// Attach to enclosing describe for later processing.
-					for i := len(stack) - 1; i >= 0; i-- {
-						if stack[i].kind == frameDescribe {
-							stack[i].children = append(stack[i].children, top)
-							break
-						}
-					}
-				} else {
-					topLevelDescribes = append(topLevelDescribes, top)
-				}
-			}
-		}
+	visitor := &specVisitor{
+		tokens:      tokens,
+		relaxedMode: relaxed,
 	}
+	visitor.visitProgram(tree)
 
 	var docs []*messages.GherkinDocument
-	for _, d := range topLevelDescribes {
+	for _, d := range visitor.topLevelDescribes {
 		emitDescribe(d, path, nil, &docs)
+	}
+
+	if errs := append(append([]string{}, lexErrs.errs...), parseErrs.errs...); len(errs) > 0 {
+		return docs, fmt.Errorf("parse errors in %s: %s", path, strings.Join(errs, "; "))
 	}
 	return docs, nil
 }
@@ -277,10 +204,6 @@ func buildFeatureDoc(d *frame, path string, uriAncestors []string) *messages.Ghe
 			Children: children,
 		},
 	}
-}
-
-func isIdentChar(c byte) bool {
-	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_'
 }
 
 func normalizeUri(path string) string {

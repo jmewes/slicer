@@ -177,6 +177,49 @@ func TestSeparateFeaturesForNestedDescribeBlocks(t *testing.T) {
 	}
 }
 
+func TestParseSpecFile_multiLineDescribeAndTemplateLiteralName(t *testing.T) {
+	// Given a spec file whose `describe(` and `it(` calls span multiple lines
+	// And one `it` uses a template-literal (backtick) test name
+	// And the file also contains `fit(` and `xit(` sibling calls
+	specPath := "testdata/multiline-describe.spec.ts"
+
+	// When the spec file gets parsed
+	docs := mustParseSpecFile(specPath)
+
+	// Then a single feature is produced from the multi-line `describe`
+	if len(docs) != 1 {
+		t.Fatalf("Expected 1 GherkinDocument, got %d", len(docs))
+	}
+	doc := docs[0]
+	if doc.Feature.Name != "Multi line describe" {
+		t.Errorf("Expected Feature name 'Multi line describe', got '%s'", doc.Feature.Name)
+	}
+
+	// And only the two `it(` blocks (not `fit` / `xit`) become scenarios
+	var scenarios []*messages.Scenario
+	for _, c := range doc.Feature.Children {
+		if c.Scenario != nil {
+			scenarios = append(scenarios, c.Scenario)
+		}
+	}
+	if len(scenarios) != 2 {
+		t.Fatalf("Expected 2 scenarios, got %d", len(scenarios))
+	}
+
+	// And the template-literal name is captured (with the "should " prefix stripped)
+	if scenarios[0].Name != "support template literal names" {
+		t.Errorf("Expected first scenario name 'support template literal names', got '%s'", scenarios[0].Name)
+	}
+
+	// And the stray `//` comment between the `it` blocks does not produce spurious steps
+	if len(scenarios[0].Steps) != 3 {
+		t.Fatalf("Expected 3 steps in first scenario, got %d", len(scenarios[0].Steps))
+	}
+	if len(scenarios[1].Steps) != 3 {
+		t.Fatalf("Expected 3 steps in second scenario, got %d", len(scenarios[1].Steps))
+	}
+}
+
 type parseOption func(*parseConfig)
 
 type parseConfig struct {

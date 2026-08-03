@@ -1,4 +1,4 @@
-package core
+package javascript_parser
 
 import (
 	"testing"

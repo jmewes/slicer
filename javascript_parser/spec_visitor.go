@@ -1,4 +1,4 @@
-// Copyright (C) 2026 John Doe
+// Copyright (C) 2026 Jan Mewes
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package core
+package javascript_parser
 
 import (
 	"strings"
 
 	"github.com/antlr4-go/antlr/v4"
 	messages "github.com/cucumber/messages/go/v28"
-	specantlr "github.com/experimental-software/gherkin/core/antlr"
+	specantlr "github.com/experimental-software/gherkin/javascript_parser/antlr"
 )
 
 // specVisitor walks the ANTLR parse tree of a Jasmine-style spec file and

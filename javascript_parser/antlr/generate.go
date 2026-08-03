@@ -1,4 +1,4 @@
-// Copyright (C) 2026 John Doe
+// Copyright (C) 2026 Jan Mewes
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -25,4 +25,4 @@
 // This requires Java and the ANTLR jar (see README / AGENTS.md for setup).
 package specantlr
 
-//go:generate java -jar ../../.tools/antlr-4.13.2-complete.jar -Dlanguage=Go -no-listener -visitor -package specantlr -o . SpecGrammar.g4
+//go:generate antlr -Dlanguage=Go -no-listener -visitor -package specantlr -o . SpecGrammar.g4

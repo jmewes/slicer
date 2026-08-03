@@ -27,10 +27,11 @@ To regenerate them (only needed after editing the grammar), download the
 ANTLR complete jar into `.tools/` and run `go generate`:
 
 ```sh
-mkdir -p .tools
-curl -sSL -o .tools/antlr-4.13.2-complete.jar \
-    https://www.antlr.org/download/antlr-4.13.2-complete.jar
-go generate ./core/antlr/...
+brew install antlr
+```
+
+```sh
+go generate ./javascript_parser/antlr/...
 ```
 
 This requires a JDK on the `PATH`. The jar is a dev-only dependency and

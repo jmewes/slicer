@@ -13,16 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// Package specantlr contains the ANTLR-generated lexer/parser for the minimal
-// TypeScript spec-file island grammar used to reverse-engineer Gherkin
-// feature files from Jasmine-style *.spec.ts sources.
-//
-// The generated `.go` files are committed to the repository; end users only
-// need Go to build the project. Regenerate them with:
-//
-//	go generate ./core/antlr/...
-//
-// This requires Java and the ANTLR jar (see README / AGENTS.md for setup).
 package specantlr
 
 //go:generate antlr -Dlanguage=Go -no-listener -visitor -package specantlr -o . SpecGrammar.g4

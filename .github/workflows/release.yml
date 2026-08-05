@@ -95,6 +95,9 @@ jobs:
     name: Update README version
     needs: release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -110,10 +113,19 @@ jobs:
           ESCAPED_NEW=$(printf '%s' "$NEW_VERSION" | sed 's/[&/\]/\\&/g')
           sed -i "s/$ESCAPED_OLD/$ESCAPED_NEW/g" README.md
 
-      - name: Commit and push
+      - name: Create pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEW_VERSION: ${{ github.event.release.tag_name }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="docs/readme-version-$NEW_VERSION"
+          git checkout -b "$BRANCH"
           git add README.md
-          git diff --cached --quiet || git commit -m "docs: update README to version ${{ github.event.release.tag_name }}"
-          git push origin main
+          git diff --cached --quiet && exit 0
+          git commit -m "docs: update README to version $NEW_VERSION"
+          git push origin "$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "docs: update README to version $NEW_VERSION" \
+            --body "Bumps the version referenced in README.md to $NEW_VERSION."

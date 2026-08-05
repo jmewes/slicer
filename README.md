@@ -1,12 +1,30 @@
 # Slicer
 
-**Slicer** is a commandline program that can generate [Gherkin feature-files](https://cucumber.io/docs/gherkin/reference/#feature) from existing test suites and specification documents from feature-files. This can be useful for extracting specifications from existing programs to re-create the code in other programming languages or other frameworks. It may also be useful to improve the quality of the test suite.
+**Slicer** is a command-line program that can generate [Gherkin feature files](https://cucumber.io/docs/gherkin/reference/#feature) from existing test suites and specification documents from feature files (coming soon). This can be useful for recreating existing programs in other programming languages or frameworks. It may also be useful to analyze a project’s test suite to improve its quality.
 
-## Getting started / Installation
+## Usage
+
+### Dependencies
+
+The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can just be executed via PowerShell or another terminal emulator.
+
+For the development of the project, the following tools are needed:
+
+- GitHub
+- Git
+- ANTRL
+
+<details>
+<summary>Setup macOS</summary>
+
+<br />
 
 ```sh
-go install
+brew install git
+brew install antlr
 ```
+
+</details>
 
 ## Development
 
@@ -21,6 +39,12 @@ go test ./...
 ```sh
 TEMP_DIR=$(mktemp -d)
 go run main.go rev --source "$SOURCE_DIR" --target "$TEMP_DIR" && code $TEMP_DIR
+```
+
+### Installation from source code
+
+```sh
+go install
 ```
 
 ## Maintenance

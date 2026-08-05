@@ -6,7 +6,7 @@
 
 ### Dependencies
 
-The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can just be executed via PowerShell or another terminal emulator.
+The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can just be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
 
 For the development of the project, the following tools are needed:
 

@@ -2,7 +2,7 @@
 
 ## Auto-commit
 
-After generating code, add all changes to the staging index using `git add .` and create a commit. Use the name and language model for the commit author.
+After generating code, add all changes to the staging index using `git add .` and create a commit. Use the agent name and language model for the commit author.
 
 ## Tests
 

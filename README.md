@@ -12,10 +12,10 @@ The program is distributed as a binary file, so after downloading it, no further
 
 #### Windows
 
-Download the latest release `.exe` and its `.sha256` checksum file from the [releases page](https://github.com/jmewes/slicer/releases), e.g. [0.1.2-RC1](https://github.com/jmewes/slicer/releases/tag/0.1.2-RC1), then verify the checksum before running it:
+Download the latest release `.exe` and its `.sha256` checksum file from the [releases page](https://github.com/jmewes/slicer/releases), e.g. [0.1.2-RC4](https://github.com/jmewes/slicer/releases/tag/0.1.2-RC4), then verify the checksum before running it:
 
 ```powershell
-$version = "0.1.2-RC1"
+$version = "0.1.2-RC4"
 $binary = "gherkin-$version-windows-amd64.exe"
 
 Invoke-WebRequest -Uri "https://github.com/jmewes/slicer/releases/download/$version/$binary" -OutFile $binary

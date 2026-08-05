@@ -52,11 +52,19 @@ jobs:
           mkdir -p dist
           go build -trimpath -ldflags "-s -w" -o "dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}" .
 
+      - name: Generate checksum
+        shell: pwsh
+        run: |
+          $file = "dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}"
+          (Get-FileHash -Path $file -Algorithm SHA256).Hash.ToLower() + "  " + (Split-Path $file -Leaf) | Out-File -FilePath "$file.sha256" -Encoding ascii -NoNewline
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: gherkin-${{ matrix.name }}
-          path: dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}
+          path: |
+            dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}
+            dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}.sha256
 
   release:
     name: Upload release binaries

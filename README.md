@@ -4,6 +4,10 @@
 
 ## Usage
 
+### Dependencies
+
+The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can just be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
+
 ### Installation
 
 #### Windows
@@ -27,9 +31,9 @@ if ($expected -eq $actual) {
 }
 ```
 
-### Dependencies
+## Development
 
-The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can just be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
+### Dependencies
 
 For the development of the project, the following tools are needed:
 
@@ -48,8 +52,6 @@ brew install antlr
 ```
 
 </details>
-
-## Development
 
 ### Run tests
 

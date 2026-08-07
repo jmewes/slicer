@@ -6,7 +6,7 @@
 
 ### Dependencies
 
-The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can just be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
+The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
 
 ### Installation
 
@@ -91,6 +91,10 @@ gh issue view ${ISSUE_NUMBER} --json url
 
 **Development processes**
 
+- [GitHub Spec Kit](https://github.github.com/spec-kit/)
+- [OpenSpec](https://openspec.dev/)
+- [BMAD Method](https://docs.bmad-method.org/)
+- [Spec-Driven Development | addyosmani/agent-skills](https://github.com/addyosmani/agent-skills/blob/main/skills/spec-driven-development/SKILL.md)
 - [Structured-Prompt-Driven Development (SPDD) | Wei Zhang, Jessie Jie Xia | martinfowler.com](https://martinfowler.com/articles/structured-prompt-driven)
 - [AI Unified Process (AIUP)](https://unifiedprocess.ai/)
 

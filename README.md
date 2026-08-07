@@ -1,6 +1,6 @@
 # Slicer
 
-**Slicer** is a command-line program that can generate [Gherkin feature files](https://cucumber.io/docs/gherkin/reference/#feature) from existing test suites and specification documents from feature files (coming soon). This can be useful for recreating existing programs in other programming languages or frameworks. It may also be useful to analyze a project’s test suite to improve its quality.
+**Slicer** is a command-line program that can generate [Gherkin feature files](https://cucumber.io/docs/gherkin/reference/#feature) from existing test suites and specification documents from feature files (coming soon). This can be useful for recreating existing programs in other programming languages or frameworks. It might also be useful to analyze a project’s test suite to improve its expressiveness.
 
 ## Usage
 

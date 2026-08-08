@@ -1,4 +1,4 @@
-package core
+package javascript
 
 import (
 	"testing"
@@ -79,6 +79,37 @@ func TestParseSpecFile_relaxed_disabled(t *testing.T) {
 	doc := docs[0]
 	if len(doc.Feature.Children) != 1 {
 		t.Fatalf("Expected 1 scenario, got %d", len(doc.Feature.Children))
+	}
+}
+
+func TestParseSpecFile_double_quotes(t *testing.T) {
+	// Given a test file that has a "describe" block and tests using double-quotes
+	specPath := "testdata/test-with-double-quotes.ts"
+
+	// When the Gherkin document is parsed
+	docs, err := ParseSpecFile(specPath, false)
+	if err != nil {
+		t.Fatalf("ParseSpecFile failed: %v", err)
+	}
+
+	if len(docs) != 1 {
+		t.Fatalf("Expected 1 GherkinDocument, got %d", len(docs))
+	}
+
+	doc := docs[0]
+
+	// Then the description of the "describe" block becomes the Feature name of the Gherkin document
+	if doc.Feature.Name != "User authentication (2)" {
+		t.Errorf("Expected Feature name 'User authentication (2)', got '%s'", doc.Feature.Name)
+	}
+
+	// And the "it" block is mapped to a Scenario
+	if len(doc.Feature.Children) != 1 {
+		t.Fatalf("Expected 1 scenario, got %d", len(doc.Feature.Children))
+	}
+
+	if doc.Feature.Children[0].Scenario.Name != "log in successfully (2)" {
+		t.Errorf("Expected first scenario name 'log in successfully (2)', got '%s'", doc.Feature.Children[0].Scenario.Name)
 	}
 }
 
@@ -174,6 +205,40 @@ func TestSeparateFeaturesForNestedDescribeBlocks(t *testing.T) {
 	}
 	if oogleScenarios[0].Name != "quuux" {
 		t.Errorf("Expected scenario name 'quuux', got '%s'", oogleScenarios[0].Name)
+	}
+}
+
+func TestParseSpecFile_mustParseSpecFile_multi_line_describe(t *testing.T) {
+	// Given a spec file whose `describe(` and `it(` calls span multiple lines
+	// And one `it` uses a template-literal (backtick) test name
+	specPath := "testdata/multiline-describe.spec.ts"
+
+	// When the spec file gets parsed
+	docs := mustParseSpecFile(specPath)
+
+	// Then a single feature is produced from the multi-line `describe`
+	if len(docs) != 1 {
+		t.Fatalf("Expected 1 GherkinDocument, got %d", len(docs))
+	}
+	doc := docs[0]
+	if doc.Feature.Name != "Multi line describe" {
+		t.Errorf("Expected Feature name 'Multi line describe', got '%s'", doc.Feature.Name)
+	}
+
+	// And the two `it` blocks become scenarios
+	var scenarios []*messages.Scenario
+	for _, c := range doc.Feature.Children {
+		if c.Scenario != nil {
+			scenarios = append(scenarios, c.Scenario)
+		}
+	}
+	if len(scenarios) != 2 {
+		t.Fatalf("Expected 2 scenarios, got %d", len(scenarios))
+	}
+
+	// And the template-literal name is captured
+	if scenarios[0].Name != "support template literal names" {
+		t.Errorf("Expected first scenario name 'support template literal names', got '%s'", scenarios[0].Name)
 	}
 }
 

@@ -1,14 +1,56 @@
 # Slicer
 
-**Slicer** is a commandline program that can generate [Gherkin feature-files](https://cucumber.io/docs/gherkin/reference/#feature) from existing test suites and specification documents from feature-files. This can be useful for extracting specifications from existing programs to re-create the code in other programming languages or other frameworks. It may also be useful to improve the quality of the test suite.
+**Slicer** is a command-line program that can generate [Gherkin feature files](https://cucumber.io/docs/gherkin/reference/#feature) from existing test suites and specification documents from feature files (coming soon). This can be useful for recreating existing programs in other programming languages or frameworks. It might also be useful to analyze a project’s test suite to improve its expressiveness.
 
-## Getting started / Installation
+## Usage
 
-```sh
-go install
+### Dependencies
+
+The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
+
+### Installation
+
+#### Windows
+
+Download the latest release `.exe` from the [releases page](https://github.com/jmewes/slicer/releases), then verify the checksum before running it:
+
+```powershell
+$version = "0.1.2-RC4"
+$binary = "slicer-$version-windows-amd64.exe"
+$expected = "6b455b4051ff5f8149e21e82df6ff9e91c4f8556a9b8259296433b648a9719f7"
+
+Invoke-WebRequest -Uri "https://github.com/jmewes/slicer/releases/download/$version/$binary" -OutFile $binary
+
+$actual = (Get-FileHash -Path $binary -Algorithm SHA256).Hash.ToLower()
+
+if ($expected -eq $actual) {
+    Write-Output "Checksum OK"
+} else {
+    Write-Error "Checksum mismatch. Do not run this file!"
+}
 ```
 
 ## Development
+
+### Dependencies
+
+For the development of the project, the following tools are needed:
+
+- GitHub
+- Git
+- ANTRL
+
+<details>
+<summary>Setup macOS</summary>
+
+<br />
+
+```sh
+brew install git
+brew install antlr
+```
+
+</details>
 
 ### Run tests
 
@@ -44,6 +86,12 @@ TEMP_DIR=$(mktemp -d)
 go run main.go rev --source "$SOURCE_DIR" --target "$TEMP_DIR" && code $TEMP_DIR
 ```
 
+### Installation from source code
+
+```sh
+go install
+```
+
 ## Maintenance
 
 ### Open GitHub issue in the browser
@@ -63,6 +111,10 @@ gh issue view ${ISSUE_NUMBER} --json url
 
 **Development processes**
 
+- [GitHub Spec Kit](https://github.github.com/spec-kit/)
+- [OpenSpec](https://openspec.dev/)
+- [BMAD Method](https://docs.bmad-method.org/)
+- [Spec-Driven Development | addyosmani/agent-skills](https://github.com/addyosmani/agent-skills/blob/main/skills/spec-driven-development/SKILL.md)
 - [Structured-Prompt-Driven Development (SPDD) | Wei Zhang, Jessie Jie Xia | martinfowler.com](https://martinfowler.com/articles/structured-prompt-driven)
 - [AI Unified Process (AIUP)](https://unifiedprocess.ai/)
 

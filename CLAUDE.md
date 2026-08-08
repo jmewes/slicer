@@ -1,5 +1,9 @@
 # Agent guidelines
 
+## Auto-commit
+
+After generating code, add all changes to the staging index using `git add .` and create a commit. Use the agent name and language model for the commit author.
+
 ## Tests
 
 - When provided with an implementation request with Gherkin notation (Given/When/Then), treat it as specification by example.

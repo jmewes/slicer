@@ -4,3 +4,4 @@ describe("User authentication (2)", () => {
     // When the user enters valid credentials
     // Then the user is redirected to the dashboard
   });
+});

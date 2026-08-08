@@ -108,8 +108,8 @@ func TestParseSpecFile_double_quotes(t *testing.T) {
 		t.Fatalf("Expected 1 scenario, got %d", len(doc.Feature.Children))
 	}
 
-	if doc.Feature.Children[0].Scenario.Name != "should log in successfully (2)" {
-		t.Errorf("Expected first scenario name 'should log in successfully (2)', got '%s'", doc.Feature.Children[0].Scenario.Name)
+	if doc.Feature.Children[0].Scenario.Name != "log in successfully (2)" {
+		t.Errorf("Expected first scenario name 'log in successfully (2)', got '%s'", doc.Feature.Children[0].Scenario.Name)
 	}
 }
 

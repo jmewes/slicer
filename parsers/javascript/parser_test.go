@@ -1,6 +1,7 @@
 package javascript
 
 import (
+	"strings"
 	"testing"
 
 	messages "github.com/cucumber/messages/go/v28"
@@ -130,6 +131,25 @@ func TestResourcePathSimpleFeature(t *testing.T) {
 	doc := docs[0]
 	if doc.Uri != "testdata/resource-name-test/one-feature-with-one-test/just-a-test" {
 		t.Errorf("Unexpected resource path: '%s'", doc.Uri)
+	}
+}
+
+func TestResourcePathKeepsAcronymsTogether(t *testing.T) {
+	// Given a testfile with a describe block title "FOO-Bar"
+	specPath := "testdata/resource_Name_test/acronym-in-describe-title.spec.ts"
+
+	// When the resource path gets calculated
+	docs := mustParseSpecFile(specPath)
+
+	if len(docs) != 1 {
+		t.Fatalf("Expected 1 GherkinDocument, got %d", len(docs))
+	}
+	doc := docs[0]
+	featureFileName := doc.Uri[strings.LastIndex(doc.Uri, "/")+1:] + ".feature"
+
+	// Then it ends with the string "foo-bar.feature"
+	if !strings.HasSuffix(featureFileName, "foo-bar.feature") {
+		t.Errorf("Expected resource path to end with 'foo-bar.feature', got '%s' (uri: '%s')", featureFileName, doc.Uri)
 	}
 }
 

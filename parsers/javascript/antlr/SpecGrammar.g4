@@ -5,7 +5,7 @@ grammar SpecGrammar;
 // filler to keep parentheses and braces balanced.
 //
 // The Go files generated from this grammar are committed to the repo; do
-// NOT hand-edit them. Regenerate via `go generate ./core/antlr/...`.
+// NOT hand-edit them.
 
 program : element* EOF ;
 

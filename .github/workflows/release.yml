@@ -113,7 +113,7 @@ jobs:
           ESCAPED_NEW=$(printf '%s' "$NEW_VERSION" | sed 's/[&/\]/\\&/g')
           sed -i "s/$ESCAPED_OLD/$ESCAPED_NEW/g" README.md
 
-      - name: Update checksum in README
+      - name: Update Windows binary checksum in README
         env:
           GH_TOKEN: ${{ github.token }}
           NEW_VERSION: ${{ github.event.release.tag_name }}

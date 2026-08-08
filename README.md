@@ -12,7 +12,7 @@ The program is distributed as a binary file, so after downloading it, no further
 
 #### Windows
 
-Download the latest release `.exe` and its `.sha256` checksum file from the [releases page](https://github.com/jmewes/slicer/releases), then verify the checksum before running it:
+Download the latest release `.exe` from the [releases page](https://github.com/jmewes/slicer/releases), then verify the checksum before running it:
 
 ```powershell
 $version = "0.1.2-RC4"

@@ -54,32 +54,25 @@ brew install antlr
 
 ### Run tests
 
+The unit tests of the project can be executed with the following command:
+
 ```sh
 go test ./...
 ```
 
 ### Regenerating the ANTLR spec parser
 
-The `core/antlr` package contains an ANTLR-generated Go parser for a
-minimal TypeScript spec-file island grammar (`SpecGrammar.g4`). The
-generated `.go` files are committed, so building and testing the project
-only requires the Go toolchain.
+The `parsers` directory has a subdirectory for each supported source language (currently only `javascript`). There is a go-package for the respective language and another subdirectory for the ANTLR-generated parser.
 
-To regenerate them (only needed after editing the grammar), download the
-ANTLR complete jar into `.tools/` and run `go generate`:
-
-```sh
-brew install antlr
-```
+To re-generate the ANTLR-generated parser, execute the following command:
 
 ```sh
 go generate ./parsers/javascript/antlr/...
 ```
 
-This requires a JDK on the `PATH`. The jar is a dev-only dependency and
-is not needed to build or run Slicer.
-
 ## Integration tests
+
+The **Slicer** program can be executed without full compilation by running its `main.go` file using the `go` program:
 
 ```sh
 TEMP_DIR=$(mktemp -d)
@@ -88,11 +81,27 @@ go run main.go rev --source "$SOURCE_DIR" --target "$TEMP_DIR" && code $TEMP_DIR
 
 ### Installation from source code
 
+Instead of downloading the binary files from the GitHub releases, the `slicer` binary file can be compiled and installed from the source code, by running the following command:
+
 ```sh
 go install
 ```
 
 ## Maintenance
+
+### Create a new release
+
+Creating new releases is done via the GitHub website:
+
+https://github.com/jmewes/slicer/releases/new
+
+Creating the release should automatically trigger the creation of the binary files via GitHub Actions:
+
+https://github.com/jmewes/slicer/actions
+
+As the final result, the GitHub Actions create a pull request for including the new release in the project's README file:
+
+https://github.com/jmewes/slicer/pulls
 
 ### Open GitHub issue in the browser
 
@@ -109,7 +118,7 @@ gh issue view ${ISSUE_NUMBER} --json url
 
 - [Cucumber](https://cucumber.io/)
 
-**Development processes**
+**Agentic coding tools and practices**
 
 - [GitHub Spec Kit](https://github.github.com/spec-kit/)
 - [OpenSpec](https://openspec.dev/)
@@ -136,4 +145,3 @@ gh issue view ${ISSUE_NUMBER} --json url
 
 - https://cucumber.io/docs/gherkin/reference/
 - https://github.com/cucumber/gherkin
-- https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete

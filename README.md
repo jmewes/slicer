@@ -16,7 +16,7 @@ Download the latest release `.exe` from the [releases page](https://github.com/j
 
 ```powershell
 $version = "0.1.2-RC4"
-$binary = "gherkin-$version-windows-amd64.exe"
+$binary = "slicer-$version-windows-amd64.exe"
 $expected = "6b455b4051ff5f8149e21e82df6ff9e91c4f8556a9b8259296433b648a9719f7"
 
 Invoke-WebRequest -Uri "https://github.com/jmewes/slicer/releases/download/$version/$binary" -OutFile $binary

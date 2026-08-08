@@ -15,9 +15,9 @@ The program is distributed as a binary file, so after downloading it, no further
 Download the latest release `.exe` from the [releases page](https://github.com/jmewes/slicer/releases), then verify the checksum before running it:
 
 ```powershell
-$version = "0.1.2-RC4"
+$version = "0.2.0-RC2"
 $binary = "slicer-$version-windows-amd64.exe"
-$expected = "6b455b4051ff5f8149e21e82df6ff9e91c4f8556a9b8259296433b648a9719f7"
+$expected = "e67311fe0c29f8eb7d0db31f56ecd2a98458f9973d55897d286a085d5f6a078b"
 
 Invoke-WebRequest -Uri "https://github.com/jmewes/slicer/releases/download/$version/$binary" -OutFile $binary
 

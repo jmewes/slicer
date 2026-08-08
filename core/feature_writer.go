@@ -10,6 +10,7 @@ import (
 )
 
 func CalculateFeaturePath(originalUri string) string {
+	originalUri = filepath.ToSlash(originalUri)
 	parts := strings.Split(originalUri, "/")
 	var beforeParts []string
 	var afterParts []string

@@ -4,8 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	messages "github.com/cucumber/messages/go/v28"
+	"github.com/experimental-software/gherkin/parsers/javascript"
 )
 
 func TestCalculateFeaturePath(t *testing.T) {
@@ -38,41 +37,57 @@ func TestCalculateFeaturePath(t *testing.T) {
 	})
 }
 
-func TestWriteFeatureFiles_nested_sub_directories(t *testing.T) {
-	// Given a path with multiple slashes
-	uri := "components/input/add-item-button/AddItemButtonComponent"
-	docs := []*messages.GherkinDocument{
-		{
-			Uri: uri,
-			Feature: &messages.Feature{
-				Name: "Add item button",
-			},
-		},
+func TestWriteFeatureFiles_NestedSubDirectories(t *testing.T) {
+	// Scenario: create nested sub-directories
+	
+	// Given a spec file "src/app/shared/utils.spec.ts" (relative to the "testdata" source directory)
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Failed to get cwd: %v", err)
 	}
-
+	err = os.Chdir("testdata")
+	if err != nil {
+		t.Fatalf("Failed to chdir to testdata: %v", err)
+	}
+	defer os.Chdir(cwd)
+	
+	specPath := filepath.Join("src", "app", "shared", "utils.spec.ts")
+	
+	// When the spec file gets parsed into Gherkin documents
+	docs, err := javascript.ParseSpecFile(specPath, true)
+	if err != nil {
+		t.Fatalf("Failed to parse spec file: %v", err)
+	}
+	
+	// And the feature files created 
 	targetDir := t.TempDir()
-
-	// When the feature files are written into the target directory
-	if err := WriteFeatureFiles(docs, targetDir); err != nil {
-		t.Fatalf("WriteFeatureFiles returned error: %v", err)
+	err = WriteFeatureFiles(docs, targetDir)
+	if err != nil {
+		t.Fatalf("Failed to write feature files: %v", err)
 	}
-
-	// Then for each path element (separated by the slashes), a sub-directory gets created
-	pathElements := []string{"components", "input", "add-item-button"}
-	currentDir := targetDir
-	for _, element := range pathElements {
-		currentDir = filepath.Join(currentDir, element)
-		info, err := os.Stat(currentDir)
-		if err != nil {
-			t.Fatalf("expected sub-directory %q to exist: %v", currentDir, err)
-		}
-		if !info.IsDir() {
-			t.Fatalf("expected %q to be a directory", currentDir)
-		}
+	
+	// Then the directory "src" exists (relative to the tempory target directory)
+	if _, err := os.Stat(filepath.Join(targetDir, "src")); os.IsNotExist(err) {
+		t.Errorf("Directory 'src' does not exist")
 	}
-
-	expectedFile := filepath.Join(targetDir, "components", "input", "add-item-button", "AddItemButtonComponent.feature")
-	if _, err := os.Stat(expectedFile); err != nil {
-		t.Fatalf("expected feature file %q to exist: %v", expectedFile, err)
+	
+	// And the directory "src/app" exists
+	if _, err := os.Stat(filepath.Join(targetDir, "src", "app")); os.IsNotExist(err) {
+		t.Errorf("Directory 'src/app' does not exist")
+	}
+	
+	// And the directory "src/app/shared" exists
+	if _, err := os.Stat(filepath.Join(targetDir, "src", "app", "shared")); os.IsNotExist(err) {
+		t.Errorf("Directory 'src/app/shared' does not exist")
+	}
+	
+	// And the directory "src/app/shared/utils" exists
+	if _, err := os.Stat(filepath.Join(targetDir, "src", "app", "shared", "utils")); os.IsNotExist(err) {
+		t.Errorf("Directory 'src/app/shared/utils' does not exist")
+	}
+	
+	// And the file "src/app/shared/utils/foo.feature" exists
+	if _, err := os.Stat(filepath.Join(targetDir, "src", "app", "shared", "utils", "foo.feature")); os.IsNotExist(err) {
+		t.Errorf("File 'src/app/shared/utils/foo.feature' does not exist")
 	}
 }

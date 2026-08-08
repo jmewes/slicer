@@ -16,6 +16,7 @@
 package javascript
 
 import (
+	"path/filepath"
 	"strings"
 
 	messages "github.com/cucumber/messages/go/v28"
@@ -113,9 +114,8 @@ func buildFeatureDoc(d *frame, path string, uriAncestors []string) *messages.Ghe
 		uriParts = append(uriParts, utils.ToKebabCase(p))
 	}
 	uri := path + "/" + strings.Join(uriParts, "/")
-	if idx := strings.Index(uri, "src/app/"); idx >= 0 {
-		uri = uri[idx+len("src/app/"):]
-	}
+	
+	uri = filepath.ToSlash(uri)
 
 	return &messages.GherkinDocument{
 		Uri: normalizeUri(uri),

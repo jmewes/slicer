@@ -58,21 +58,21 @@ jobs:
           CGO_ENABLED: '0'
         run: |
           mkdir -p dist
-          go build -trimpath -ldflags "-s -w" -o "dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}" .
+          go build -trimpath -ldflags "-s -w" -o "dist/slicer-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}" .
 
       - name: Generate checksum
         shell: pwsh
         run: |
-          $file = "dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}"
+          $file = "dist/slicer-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}"
           (Get-FileHash -Path $file -Algorithm SHA256).Hash.ToLower() + "  " + (Split-Path $file -Leaf) | Out-File -FilePath "$file.sha256" -Encoding ascii -NoNewline
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gherkin-${{ matrix.name }}
+          name: slicer-${{ matrix.name }}
           path: |
-            dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}
-            dist/gherkin-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}.sha256
+            dist/slicer-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}
+            dist/slicer-${{ github.event.release.tag_name }}-${{ matrix.name }}${{ matrix.ext }}.sha256
 
   release:
     name: Upload release binaries
@@ -118,7 +118,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           NEW_VERSION: ${{ github.event.release.tag_name }}
         run: |
-          BINARY="gherkin-$NEW_VERSION-windows-amd64.exe"
+          BINARY="slicer-$NEW_VERSION-windows-amd64.exe"
           gh release download "$NEW_VERSION" -p "$BINARY.sha256" -O "$BINARY.sha256"
           NEW_SHA256=$(cut -d ' ' -f1 "$BINARY.sha256")
           OLD_SHA256=$(grep -oP '(?<=\$expected = ")[^"]+' README.md)

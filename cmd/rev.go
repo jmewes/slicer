@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	messages "github.com/cucumber/messages/go/v28"
+	"github.com/experimental-software/gherkin/core"
 	javascript "github.com/experimental-software/gherkin/parsers/javascript"
 	"github.com/spf13/cobra"
 )
@@ -24,7 +25,7 @@ var revCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		err = writeFeatureFiles(docs, TargetParameter)
+		err = core.WriteFeatureFiles(docs, TargetParameter)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
@@ -71,73 +72,6 @@ func parseSpecSources(source string, relaxed bool) ([]*messages.GherkinDocument,
 	}
 
 	return docs, nil
-}
-
-// sanitizeFeatureFileBaseName returns a filesystem-safe base name for a feature
-// file by replacing whitespace characters with underscores.
-func sanitizeFeatureFileBaseName(name string) string {
-	return strings.ReplaceAll(name, " ", "_")
-}
-
-// featureFilePathPartsFromURI splits a slash-separated feature URI into the
-// relative directory and the base name (the last segment).
-func featureFilePathPartsFromURI(uri string) (string, string) {
-	idx := strings.LastIndex(uri, "/")
-	if idx < 0 {
-		return "", uri
-	}
-	return uri[:idx], uri[idx+1:]
-}
-
-func renderFeatureDocument(doc *messages.GherkinDocument) string {
-	if doc == nil || doc.Feature == nil {
-		return ""
-	}
-
-	var b strings.Builder
-	b.WriteString("Feature: ")
-	b.WriteString(doc.Feature.Name)
-	b.WriteString("\n")
-
-	for _, child := range doc.Feature.Children {
-		if child == nil {
-			continue
-		}
-
-		if child.Background != nil {
-			b.WriteString("\n  Background:\n")
-			for _, step := range child.Background.Steps {
-				if step == nil {
-					continue
-				}
-				b.WriteString("    ")
-				b.WriteString(strings.TrimSpace(step.Keyword))
-				b.WriteString(" ")
-				b.WriteString(step.Text)
-				b.WriteString("\n")
-			}
-		}
-
-		if child.Scenario != nil {
-			b.WriteString("\n  Scenario: ")
-			b.WriteString(child.Scenario.Name)
-			b.WriteString("\n")
-			for _, step := range child.Scenario.Steps {
-				if step == nil {
-					continue
-				}
-				b.WriteString("    ")
-				b.WriteString(strings.TrimSpace(step.Keyword))
-				b.WriteString(" ")
-				b.WriteString(step.Text)
-				b.WriteString("\n")
-			}
-		}
-	}
-
-	b.WriteString("\n")
-
-	return b.String()
 }
 
 func init() {

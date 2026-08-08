@@ -113,6 +113,18 @@ jobs:
           ESCAPED_NEW=$(printf '%s' "$NEW_VERSION" | sed 's/[&/\]/\\&/g')
           sed -i "s/$ESCAPED_OLD/$ESCAPED_NEW/g" README.md
 
+      - name: Update checksum in README
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEW_VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          BINARY="gherkin-$NEW_VERSION-windows-amd64.exe"
+          gh release download "$NEW_VERSION" -p "$BINARY.sha256" -O "$BINARY.sha256"
+          NEW_SHA256=$(cut -d ' ' -f1 "$BINARY.sha256")
+          OLD_SHA256=$(grep -oP '(?<=\$expected = ")[^"]+' README.md)
+          sed -i "s/$OLD_SHA256/$NEW_SHA256/g" README.md
+          rm "$BINARY.sha256"
+
       - name: Create pull request
         env:
           GH_TOKEN: ${{ github.token }}

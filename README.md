@@ -17,11 +17,10 @@ Download the latest release `.exe` and its `.sha256` checksum file from the [rel
 ```powershell
 $version = "0.1.2-RC4"
 $binary = "gherkin-$version-windows-amd64.exe"
+$expected = "6b455b4051ff5f8149e21e82df6ff9e91c4f8556a9b8259296433b648a9719f7"
 
 Invoke-WebRequest -Uri "https://github.com/jmewes/slicer/releases/download/$version/$binary" -OutFile $binary
-Invoke-WebRequest -Uri "https://github.com/jmewes/slicer/releases/download/$version/$binary.sha256" -OutFile "$binary.sha256"
 
-$expected = (Get-Content "$binary.sha256").Split(" ")[0]
 $actual = (Get-FileHash -Path $binary -Algorithm SHA256).Hash.ToLower()
 
 if ($expected -eq $actual) {

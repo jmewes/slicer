@@ -10,6 +10,18 @@ After generating code, add all changes to the staging index using `git add .` an
 - In the generated tests, add the steps of the Gherkin notation as comments right before the implementation of the respective step in the test. So there is a comment with a step specification, then some go code, then potentially another comment with a step specification and so on.
 - Do not create tests for the "cmd" package.
 
+### Test naming conventions
+
+```ebnf
+TestName = PublicTest | PrivateTest ;
+PublicTest = "Test", PublicMethodName, [ Suffix ] ;
+PrivateTest = "Test_", PrivateMethodName, [ Suffix ] ;
+Suffix = "_", LowercaseWord, { "_", LowercaseWord } ;
+LowercaseWord = ( LowercaseLetter | Digit ), { LowercaseLetter | Digit } ;
+LowercaseLetter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+Digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+```
+
 ## Comments
 
 - Each Go source file should have an AGPL license header, using Copyright (C) 2026 John Doe

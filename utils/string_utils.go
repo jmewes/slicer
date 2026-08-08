@@ -22,11 +22,25 @@ import (
 )
 
 func ToKebabCase(s string) string {
-	runes := make([]rune, 0, len(s))
-	for _, r := range s {
+	input := []rune(s)
+	runes := make([]rune, 0, len(input))
+	for i, r := range input {
 		if unicode.IsLetter(r) {
 			if unicode.IsUpper(r) {
-				runes = append(runes, '-')
+				// Insert a dash to separate words, but keep consecutive
+				// uppercase letters (acronyms) together. A boundary is
+				// introduced either when transitioning from a lowercase
+				// letter or digit into an uppercase letter, or at the end
+				// of an acronym (an uppercase letter followed by a
+				// lowercase letter is the start of a new word).
+				if i > 0 {
+					prev := input[i-1]
+					if unicode.IsLower(prev) || unicode.IsDigit(prev) {
+						runes = append(runes, '-')
+					} else if unicode.IsUpper(prev) && i+1 < len(input) && unicode.IsLower(input[i+1]) {
+						runes = append(runes, '-')
+					}
+				}
 				runes = append(runes, unicode.ToLower(r))
 			} else {
 				runes = append(runes, r)

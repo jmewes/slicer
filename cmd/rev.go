@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	messages "github.com/cucumber/messages/go/v28"
-	"github.com/experimental-software/gherkin/core"
 	javascript "github.com/experimental-software/gherkin/parsers/javascript"
 	"github.com/spf13/cobra"
 )
@@ -72,49 +71,6 @@ func parseSpecSources(source string, relaxed bool) ([]*messages.GherkinDocument,
 	}
 
 	return docs, nil
-}
-
-func writeFeatureFiles(docs []*messages.GherkinDocument, targetDir string) error {
-	if targetDir == "" {
-		return fmt.Errorf("target parameter is required")
-	}
-
-	if err := os.MkdirAll(targetDir, 0o755); err != nil {
-		return err
-	}
-
-	//info, err := os.Stat(targetDir)
-	//if err != nil {
-	//	if os.IsNotExist(err) {
-	//		return fmt.Errorf("target directory does not exist: %s", targetDir)
-	//	}
-	//	return err
-	//}
-	//if !info.IsDir() {
-	//	return fmt.Errorf("target path is not a directory: %s", targetDir)
-	//}
-
-	for _, doc := range docs {
-		if doc == nil {
-			continue
-		}
-
-		uri := core.CalculateFeaturePath(doc.Uri)
-		relativeDir, baseName := featureFilePathPartsFromURI(uri)
-		baseName = sanitizeFeatureFileBaseName(baseName)
-
-		featurePath := filepath.Join(targetDir, filepath.FromSlash(relativeDir), baseName+".feature")
-
-		if err := os.MkdirAll(filepath.Dir(featurePath), 0o755); err != nil {
-			return err
-		}
-
-		if err := os.WriteFile(featurePath, []byte(renderFeatureDocument(doc)), 0o644); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
 
 // sanitizeFeatureFileBaseName returns a filesystem-safe base name for a feature

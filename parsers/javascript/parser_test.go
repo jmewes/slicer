@@ -82,6 +82,37 @@ func TestParseSpecFile_relaxed_disabled(t *testing.T) {
 	}
 }
 
+func TestParseSpecFile_double_quotes(t *testing.T) {
+	// Given a test file that has a "describe" block and tests using double-quotes
+	specPath := "testdata/test-with-double-quotes.ts"
+
+	// When the Gherkin document is parsed
+	docs, err := ParseSpecFile(specPath, false)
+	if err != nil {
+		t.Fatalf("ParseSpecFile failed: %v", err)
+	}
+
+	if len(docs) != 1 {
+		t.Fatalf("Expected 1 GherkinDocument, got %d", len(docs))
+	}
+
+	doc := docs[0]
+
+	// Then the description of the "describe" block becomes the Feature name of the Gherkin document
+	if doc.Feature.Name != "User authentication (2)" {
+		t.Errorf("Expected Feature name 'User authentication (2)', got '%s'", doc.Feature.Name)
+	}
+
+	// And the "it" block is mapped to a Scenario
+	if len(doc.Feature.Children) != 1 {
+		t.Fatalf("Expected 1 scenario, got %d", len(doc.Feature.Children))
+	}
+
+	if doc.Feature.Children[0].Scenario.Name != "should log in successfully (2)" {
+		t.Errorf("Expected first scenario name 'should log in successfully (2)', got '%s'", doc.Feature.Children[0].Scenario.Name)
+	}
+}
+
 func TestResourcePathSimpleFeature(t *testing.T) {
 	// Given a test file with a single "describe" block
 	// And a single test

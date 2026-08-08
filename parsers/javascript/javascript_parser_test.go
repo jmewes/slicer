@@ -1,4 +1,4 @@
-package javascript_parser
+package javascript
 
 import (
 	"testing"

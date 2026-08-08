@@ -73,7 +73,7 @@ brew install antlr
 ```
 
 ```sh
-go generate ./javascript_parser/antlr/...
+go generate ./parsers/javascript/antlr/...
 ```
 
 This requires a JDK on the `PATH`. The jar is a dev-only dependency and

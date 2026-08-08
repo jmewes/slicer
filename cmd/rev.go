@@ -8,7 +8,7 @@ import (
 
 	messages "github.com/cucumber/messages/go/v28"
 	"github.com/experimental-software/gherkin/core"
-	"github.com/experimental-software/gherkin/javascript_parser"
+	javascript "github.com/experimental-software/gherkin/parsers/javascript"
 	"github.com/spf13/cobra"
 )
 
@@ -42,7 +42,7 @@ func parseSpecSources(source string, relaxed bool) ([]*messages.GherkinDocument,
 	}
 
 	if !info.IsDir() {
-		return javascript_parser.ParseSpecFile(source, relaxed)
+		return javascript.ParseSpecFile(source, relaxed)
 	}
 
 	var docs []*messages.GherkinDocument
@@ -54,7 +54,7 @@ func parseSpecSources(source string, relaxed bool) ([]*messages.GherkinDocument,
 			return nil
 		}
 
-		parsedDocs, parseErr := javascript_parser.ParseSpecFile(path, relaxed)
+		parsedDocs, parseErr := javascript.ParseSpecFile(path, relaxed)
 		// Use any documents the parser managed to produce even when it
 		// reports an error, so partially-invalid spec files still yield
 		// their recognizable features instead of aborting the walk.

@@ -1,6 +1,6 @@
 # Slicer
 
-Slicer is a command-line program that can generate Gherkin feature files from existing test suites and specification documents from feature files. This approach might enable a development approach where the source code gets auto-generated for the most part, but the specifications are still written by hand. It could also be useful for recreating existing programs in other programming languages or frameworks. And to look closely at a project's test suite to make it clearer.
+Slicer is a command-line program that can generate Gherkin feature files from existing test suites and, coming soon, specification documents from feature files. This approach might enable a development process where the source code gets auto-generated for the most part, but the specifications are still written by hand. It could also be useful for recreating existing programs in other programming languages or frameworks. And to look closely at a project's test suite to make it clearer.
 
 ## Usage
 

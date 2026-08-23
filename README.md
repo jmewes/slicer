@@ -8,6 +8,23 @@ Slicer is a command-line program that can generate Gherkin feature files from ex
 
 The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
 
+### `slicer rev`
+
+`slicer rev` reverse-engineers Gherkin feature files from an existing test suite:
+
+```sh
+slicer rev --parser <jasmine|vitest> --source <path> --target <path> [--relaxed]
+```
+
+| Flag | Shorthand | Required | Description |
+|---|---|---|---|
+| `--parser` | `-p` | yes | The spec parser to use. Accepted values are `jasmine` (for `*.spec.ts` Jasmine-style suites) and `vitest` (for `*.test.ts`/`*.test.tsx`/`*.test.js`/`*.test.jsx`/`*.spec.ts`/`*.spec.tsx`/`*.spec.js`/`*.spec.jsx` Vitest suites). |
+| `--source` | `-s` | yes | Path to a single source file, or a directory that gets walked for files matching the selected parser's extensions. |
+| `--target` | `-t` | yes | Path to the directory the `.feature` files are written to. |
+| `--relaxed` | | no | When set, scenarios without any Gherkin step comments are still emitted (instead of being dropped). |
+
+`--parser` is mandatory. Omitting it fails with `required flag(s) "parser" not set`, and providing an unsupported value fails with an error listing the accepted values. This is a breaking change for any existing `slicer rev` invocation that does not yet pass `--parser`.
+
 ### Installation
 
 #### Windows
@@ -60,14 +77,20 @@ The unit tests of the project can be executed with the following command:
 go test ./...
 ```
 
+### Introducing a new parser
+
+Each framework (e.g. Jasmine, vitest) has its own parser. So, if support for further frameworks should be added, a new parser should be created.
+
+See [docs/create-new-parser.md](./docs/create-new-parser.md) for details.
+
 ### Regenerating the ANTLR spec parser
 
-The `parsers` directory has a subdirectory for each supported source language (currently only `javascript`). There is a go-package for the respective language and another subdirectory for the ANTLR-generated parser.
+The `parsers` directory has a subdirectory for each supported source language (currently `javascript` for Jasmine and `vitest` for Vitest). There is a go-package for the respective language and another subdirectory for the ANTLR-generated parser.
 
-To re-generate the ANTLR-generated parser, execute the following command:
+To re-generate the ANTLR-generated parsers, execute the following command:
 
 ```sh
-go generate ./parsers/javascript/antlr/...
+go generate ./parsers/...
 ```
 
 ## Integration tests
@@ -76,7 +99,7 @@ The **Slicer** program can be executed without full compilation by running its `
 
 ```sh
 TEMP_DIR=$(mktemp -d)
-go run main.go rev --source "$SOURCE_DIR" --target "$TEMP_DIR" && code $TEMP_DIR
+go run main.go rev --parser jasmine --source "$SOURCE_DIR" --target "$TEMP_DIR" && code $TEMP_DIR
 ```
 
 ### Installation from source code

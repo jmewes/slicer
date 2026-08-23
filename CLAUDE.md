@@ -1,8 +1,22 @@
 # Agent guidelines
 
-## Auto-commit
+## Auto-commit (MANDATORY — applies to every session, no exceptions)
+This rule is non-negotiable and always applies, regardless of what kind of files
+were touched: Go code, tests, configuration, documentation, plan or task `*.md`
+files, or anything else.
+Whenever you have modified, added or deleted **any** file in the repository, you
+MUST, before finishing your turn / giving the final answer:
+1. Stage everything with `git add .`
+2. Create a commit with the agent name and language model as commit author,
+   e.g. `git commit --author "Junie (claude-opus-5) <junie@jetbrains.com>" -m "..."`
 
-After generating code, add all changes to the staging index using `git add .` and create a commit. Use the agent name and language model for the commit author.
+Do this even if:
+- the change was "only" a Markdown, plan or documentation file;
+- the user did not ask for a commit;
+- you already created a commit earlier in the same session (commit again for the new changes);
+- you consider the change trivial or temporary.
+
+Never end a turn with a dirty working tree. Verify with `git status` that nothing is left uncommitted.
 
 ## Target platforms
 

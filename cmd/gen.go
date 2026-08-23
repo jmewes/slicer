@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/experimental-software/gherkin/core"
+	"github.com/jmewes/slicer/core"
 	"github.com/spf13/cobra"
 )
 

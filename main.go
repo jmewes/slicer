@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/experimental-software/gherkin/cmd"
+	"github.com/jmewes/slicer/cmd"
 )
 
 func main() {

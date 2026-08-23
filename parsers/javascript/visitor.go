@@ -21,7 +21,7 @@ import (
 
 	"github.com/antlr4-go/antlr/v4"
 	messages "github.com/cucumber/messages/go/v28"
-	specantlr "github.com/experimental-software/gherkin/parsers/javascript/antlr"
+	specantlr "github.com/jmewes/slicer/parsers/javascript/antlr"
 )
 
 // normalizeScenarioTitle strips a leading "should " prefix (case-insensitive).

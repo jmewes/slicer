@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	messages "github.com/cucumber/messages/go/v28"
-	"github.com/experimental-software/gherkin/core"
-	javascript "github.com/experimental-software/gherkin/parsers/javascript"
+	"github.com/jmewes/slicer/core"
+	javascript "github.com/jmewes/slicer/parsers/javascript"
 	"github.com/spf13/cobra"
 )
 

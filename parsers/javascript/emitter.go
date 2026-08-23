@@ -20,7 +20,7 @@ import (
 	"strings"
 
 	messages "github.com/cucumber/messages/go/v28"
-	"github.com/experimental-software/gherkin/utils"
+	"github.com/jmewes/slicer/utils"
 )
 
 const (
@@ -114,7 +114,7 @@ func buildFeatureDoc(d *frame, path string, uriAncestors []string) *messages.Ghe
 		uriParts = append(uriParts, utils.ToKebabCase(p))
 	}
 	uri := path + "/" + strings.Join(uriParts, "/")
-	
+
 	uri = filepath.ToSlash(uri)
 
 	return &messages.GherkinDocument{

@@ -60,6 +60,12 @@ The unit tests of the project can be executed with the following command:
 go test ./...
 ```
 
+### Introducing a new parser
+
+Each framework (e.g. Jasmine, vitest) has its own parser. So, if support for further frameworks should be added, a new parser should be created.
+
+See [docs/create-new-parser.md](./docs/create-new-parser.md) for details.
+
 ### Regenerating the ANTLR spec parser
 
 The `parsers` directory has a subdirectory for each supported source language (currently only `javascript`). There is a go-package for the respective language and another subdirectory for the ANTLR-generated parser.

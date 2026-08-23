@@ -1,4 +1,4 @@
-module github.com/experimental-software/gherkin
+module github.com/jmewes/slicer
 
 go 1.26.3
 

@@ -8,23 +8,6 @@ Slicer is a command-line program that can generate Gherkin feature files from ex
 
 The program is distributed as a binary file, so after downloading it, no further dependencies are required. The program can be executed via a terminal emulator like [Windows Terminal](https://github.com/microsoft/terminal), [iTerm2](https://iterm2.com/) or [GNOME Terminal](https://github.com/GNOME/gnome-terminal).
 
-### `slicer rev`
-
-`slicer rev` reverse-engineers Gherkin feature files from an existing test suite:
-
-```sh
-slicer rev --parser <jasmine|vitest> --source <path> --target <path> [--relaxed]
-```
-
-| Flag | Shorthand | Required | Description |
-|---|---|---|---|
-| `--parser` | `-p` | yes | The spec parser to use. Accepted values are `jasmine` (for `*.spec.ts` Jasmine-style suites) and `vitest` (for `*.test.ts`/`*.test.tsx`/`*.test.js`/`*.test.jsx`/`*.spec.ts`/`*.spec.tsx`/`*.spec.js`/`*.spec.jsx` Vitest suites). |
-| `--source` | `-s` | yes | Path to a single source file, or a directory that gets walked for files matching the selected parser's extensions. |
-| `--target` | `-t` | yes | Path to the directory the `.feature` files are written to. |
-| `--relaxed` | | no | When set, scenarios without any Gherkin step comments are still emitted (instead of being dropped). |
-
-`--parser` is mandatory. Omitting it fails with `required flag(s) "parser" not set`, and providing an unsupported value fails with an error listing the accepted values. This is a breaking change for any existing `slicer rev` invocation that does not yet pass `--parser`.
-
 ### Installation
 
 #### Windows
@@ -45,6 +28,14 @@ if ($expected -eq $actual) {
 } else {
     Write-Error "Checksum mismatch. Do not run this file!"
 }
+```
+
+### Create feature files
+
+`slicer rev` reverse-engineers Gherkin feature files from an existing test suite:
+
+```sh
+slicer rev --parser <jasmine|vitest> --source <path> --target <path> [--relaxed]
 ```
 
 ## Development

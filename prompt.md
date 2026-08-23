@@ -1,33 +1,17 @@
-
-Create a plan for the introduction of a new parser for "vitest"!
-
-It should be structurally equivalent to the existing "javascript" parser (specialised on the Jasmine framework), but strictly separated.
-
-## vitest grammar
-
-(see https://vitest.dev/guide/learn/writing-tests.html and https://vitest.dev/guide/learn/writing-tests-with-ai.html for details)
-
-For each of the vitest testsuite features listed below, create a separate test file and a separate test case.
-
-See the test files in "vitest/testdata" for the vitest test suite structures that need to be supported.
-
-## Test file naming conventions
-
-The following test file pattern should be supported:
-
-1. *.test.ts / *.test.js: e.g. utils.test.ts, utils.test.js
-2. *.spec.ts / *.spec.js: Scaffold.spec.tsx, Scaffold.spec.ts
-
-## Command-line flags
-
-For the `slicer rev` command, add a flag `--parser` (short: `-p`) where one of the following options has to be provided `jasmine`, `vitest`.
-
-## Documentation
-
-### Slicer CLI usage
-
-Add a basic user guide to the "usage" section of the README.
-
-### Adding a new parser
-
-In the file @docs/create-new-parser.md, add documentation for the steps that will need to be executed with later adding more parsers (e.g. Deno, JUnit).
+Create a step-by-step implementation plan for adding a new "vitest" parser package in `parsers/vitest`.
+## Architectural Requirements
+- Implement `parsers/vitest` structurally separated from `parsers/javascript` (Jasmine), using ANTLR grammar under `parsers/vitest/antlr`.
+- Support Vitest test structures demonstrated in `parsers/vitest/testdata/` (e.g. `describe`, `it`/`test`, `test.skip`, `test.only`, `test.todo`, `test.each`, `beforeAll`/`afterEach`, `async/await`).
+## Supported File Patterns
+Configure the Vitest parser to handle:
+- `*.test.ts`, `*.test.tsx`, `*.test.js`, `*.test.jsx`
+- `*.spec.ts`, `*.spec.tsx`, `*.spec.js`, `*.spec.jsx`
+## CLI Flag & Integration (`cmd/rev.go`)
+- Add madatory `--parser` / `-p` flag to `slicer rev`. Accepted values: `jasmine` (pointing to `parsers/javascript`), `vitest` (pointing to `parsers/vitest`).
+- Refactor `parseSpecSources` in `cmd/rev.go` to filter source files based on the selected parser's supported extensions.
+## Documentation Updates
+- `README.md`: Update usage section with `--parser` flag options.
+- `docs/create-new-parser.md`: Document step-by-step instructions for adding future parsers.
+## Verification & Constraints
+- Plan must include running `go generate ./...` and `go test ./...`.
+- Ensure AGPL headers are present on new Go files (except generated ANTLR files).

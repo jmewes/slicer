@@ -10,6 +10,22 @@ commands:
   install:
     - command: "curl -fsSL https://junie.jetbrains.com/install.sh | bash"
       user: "1000"
+    # Junie is a JVM-based CLI. The sandbox's TLS-intercepting proxy CA is
+    # trusted by the OS, but the JVM ships its own separate trust store, so
+    # without this step Junie fails to reach JetBrains services with
+    # "Secure connection to JetBrains services failed". Installing
+    # ca-certificates-java keeps a Java-compatible trust store in sync with
+    # the OS trust store, and we then copy it over any other cacerts files
+    # found on disk (e.g. a private JBR bundled by the Junie installer).
+    - command: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq ca-certificates-java
+        sudo update-ca-certificates -f
+        for cacerts in $(sudo find / -xdev -name cacerts 2>/dev/null); do
+          [ "$cacerts" = "/etc/ssl/certs/java/cacerts" ] && continue
+          sudo cp -f /etc/ssl/certs/java/cacerts "$cacerts" 2>/dev/null || true
+        done
+      user: "1000"
 
 environment:
   variables:
@@ -18,8 +34,7 @@ environment:
 
 network:
   allowedDomains:
-    - junie.jetbrains.com
-    - "*.jetbrains.com"
+    - "*."
 
 sandbox:
   aiFilename: AGENTS.md

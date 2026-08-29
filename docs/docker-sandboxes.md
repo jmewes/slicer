@@ -101,3 +101,7 @@ Claude Code ships as a built-in sandbox template, so no custom setup is needed b
   ```
 
 - Agents running inside a sandbox must still follow the auto-commit rule from [`CLAUDE.md`](../CLAUDE.md) / [`.junie/AGENTS.md`](../.junie/AGENTS.md): every modified, added or deleted file must be staged and committed before the agent finishes its turn.
+
+## Troubleshooting
+
+- **Junie fails to log in with "Secure connection to JetBrains services failed... the corporate CA certificate must be trusted by the Java runtime"**: Junie is a JVM-based CLI, but the JVM ships its own trust store that is separate from the sandbox's OS-level one. The sandbox's TLS-intercepting proxy certificate is trusted by the OS out of the box, but not by the JVM, so Junie's HTTPS calls to JetBrains fail. The [`docker-sandboxes/junie/spec.yaml`](../docker-sandboxes/junie/spec.yaml) kit installs `ca-certificates-java` and copies the resulting Java trust store over any other `cacerts` files found in the sandbox (e.g. a private JBR bundled by the Junie installer) so this happens automatically. If the error still occurs after re-creating the sandbox, run `sbx kit validate ./docker-sandboxes/junie/` to confirm the kit applied, or fall back to manually importing the CA into Junie's `cacerts` inside the sandbox (see Docker's [Install an internal CA certificate](https://docs.docker.com/ai/sandboxes/customize/kit-examples/) kit example for the general pattern).

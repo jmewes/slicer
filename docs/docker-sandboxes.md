@@ -1,20 +1,16 @@
 # Agentic coding with Docker Sandboxes
 
-This document describes how to run a coding agent (Claude Code or JetBrains Junie) against this repository inside a [Docker Sandbox](https://www.docker.com/products/docker-sandboxes/) — an isolated microVM with its own filesystem, network and Docker daemon. The agent can freely install packages, run `go generate`/`go test`, and use Git without touching the host machine. Only the project's working tree is shared with the sandbox; everything else the agent does (installed tools, processes, containers) disappears once the sandbox is removed.
+This document describes how to run a coding agent (Claude Code) against this repository inside a [Docker Sandbox](https://www.docker.com/products/docker-sandboxes/) — an isolated microVM with its own filesystem, network and Docker daemon. The agent can freely install packages, run `go generate`/`go test`, and use Git without touching the host machine. Only the project's working tree is shared with the sandbox; everything else the agent does (installed tools, processes, containers) disappears once the sandbox is removed.
 
 ## Prerequisites
+
+https://www.docker.com/products/docker-sandboxes/
 
 1. Install the `sbx` CLI (see the [official docs](https://docs.docker.com/ai/sandboxes/) for the latest instructions):
 
    ```sh
    # macOS
-   brew install docker/sandboxes/sbx
-
-   # Windows (PowerShell)
-   winget install Docker.Sandboxes
-
-   # Linux
-   curl -fsSL https://sbx.docker.com/install.sh | bash
+   brew trust docker/tap && brew install docker/tap/sbx
    ```
 
 2. Sign in:
@@ -26,7 +22,8 @@ This document describes how to run a coding agent (Claude Code or JetBrains Juni
 3. Choose a network policy. **Balanced** is recommended for this project — it allows common package registries and API endpoints while still blocking arbitrary outbound traffic:
 
    ```sh
-   sbx policy set balanced
+   # Does not work as suggested:
+   # sbx policy set balanced
    ```
 
    Running `go generate ./...` (which downloads ANTLR) and talking to the Anthropic/Junie API endpoints requires outbound network access. If a request gets blocked, allow-list the missing domain (see [Common workflow](#common-workflow) below) instead of switching to the "Open" policy.
@@ -74,32 +71,6 @@ Claude Code ships as a built-in sandbox template, so no custom setup is needed b
    ```sh
    git diff
    ```
-
-## Running Junie
-
-Junie is not one of Docker Sandboxes' built-in agent templates (only Claude Code, Codex, Copilot, Cursor, Docker Agent, Droid, Gemini, Kiro, OpenCode and Shell ship out of the box). This repository provides a small custom **kit** at [`docker-sandboxes/junie/spec.yaml`](../docker-sandboxes/junie/spec.yaml) that extends the generic `shell` template, installs the Junie CLI, and wires up a custom API key.
-
-1. Validate the kit (the kit format is an early-access feature, so it's worth checking it against your installed `sbx` version before relying on it):
-
-   ```sh
-   sbx kit validate ./docker-sandboxes/junie/
-   ```
-
-2. Store the Junie API key. Junie supports both models from the JetBrains AI Hub and custom models behind an OpenAI-compatible API, so the key/endpoint pair is stored as a custom secret:
-
-   ```sh
-   sbx secret set-custom junie --env JUNIE_API_KEY --extra JUNIE_BASE_URL=https://your-openai-compatible-endpoint.example.com
-   ```
-
-   As with Claude Code, the real key stays on the host and is injected into the sandbox only at runtime.
-
-3. Launch the sandbox using the local kit:
-
-   ```sh
-   sbx run --kit ./docker-sandboxes/junie/ junie
-   ```
-
-4. Follow the same project-specific setup (JRE + ANTLR, see step 3 above) and run `go generate ./...` / `go test ./...` as needed.
 
 ## Common workflow
 

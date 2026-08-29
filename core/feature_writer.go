@@ -114,7 +114,21 @@ func renderFeatureDocument(doc *messages.GherkinDocument) string {
 		}
 
 		if child.Scenario != nil {
-			b.WriteString("\n  Scenario: ")
+			if len(child.Scenario.Tags) > 0 {
+				b.WriteString("\n  ")
+				var tagNames []string
+				for _, tag := range child.Scenario.Tags {
+					if tag == nil {
+						continue
+					}
+					tagNames = append(tagNames, tag.Name)
+				}
+				b.WriteString(strings.Join(tagNames, " "))
+				b.WriteString("\n")
+			} else {
+				b.WriteString("\n")
+			}
+			b.WriteString("  Scenario: ")
 			b.WriteString(child.Scenario.Name)
 			b.WriteString("\n")
 			for _, step := range child.Scenario.Steps {

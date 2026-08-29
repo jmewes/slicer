@@ -26,6 +26,7 @@ import (
 const (
 	frameDescribe   = "describe"
 	frameIt         = "it"
+	frameFit        = "fit"
 	frameBeforeEach = "beforeEach"
 )
 

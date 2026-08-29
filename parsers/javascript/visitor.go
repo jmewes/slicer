@@ -130,17 +130,21 @@ func (v *specVisitor) visitSuite(s specantlr.ISuiteContext) {
 			parent.children = append(parent.children, fr)
 		}
 
-	case frameIt:
+	case frameIt, frameFit:
 		if name == "" {
 			return
 		}
 		steps := v.stepsFromBlock(body)
 		if enclosing := v.enclosingDescribe(); enclosing != nil {
 			if len(steps) > 0 || v.relaxed() {
-				enclosing.scenarios = append(enclosing.scenarios, &messages.Scenario{
+				scenario := &messages.Scenario{
 					Name:  normalizeScenarioTitle(name),
 					Steps: steps,
-				})
+				}
+				if kw == frameFit {
+					scenario.Tags = append(scenario.Tags, &messages.Tag{Name: "@only"})
+				}
+				enclosing.scenarios = append(enclosing.scenarios, scenario)
 			}
 		}
 
@@ -221,6 +225,9 @@ func suiteKind(k specantlr.ISuiteKeywordContext) string {
 	}
 	if k.IT() != nil {
 		return frameIt
+	}
+	if k.FIT() != nil {
+		return frameFit
 	}
 	if k.BEFOREEACH() != nil {
 		return frameBeforeEach

@@ -4,14 +4,14 @@
 This rule is non-negotiable and always applies, regardless of what kind of files
 were touched: Go code, tests, configuration, documentation, plan or task `*.md`
 files, or anything else.
-Whenever you have modified, added or deleted **any** file in the repository, you
+Whenever you have modified, added, or deleted **any** file in the repository, you
 MUST, before finishing your turn / giving the final answer:
 1. Stage everything with `git add .`
 2. Create a commit with the agent name and language model as commit author,
    e.g. `git commit --author "Junie (claude-opus-5) <junie@jetbrains.com>" -m "..."`
 
 Do this even if:
-- the change was "only" a Markdown, plan or documentation file;
+- the change was "only" a Markdown, plan, or documentation file;
 - the user did not ask for a commit;
 - you already created a commit earlier in the same session (commit again for the new changes);
 - you consider the change trivial or temporary.
@@ -20,12 +20,12 @@ Never end a turn with a dirty working tree. Verify with `git status` that nothin
 
 ## Target platforms
 
-The program needs to work on Windows, macOS and Linux. So all code should be platform independent, in particular directory path separators.
+The program needs to work on Windows, macOS, and Linux. So all code should be platform-independent, in particular directory path separators.
 
 ## Tests
 
 - When provided with an implementation request with Gherkin notation (Given/When/Then), treat it as specification-by-example.
-- In the generated tests, add the steps of the Gherkin notation as comments right before the implementation of the respective step in the test. So there is a comment with a step specification, then some go code, then potentially another comment with a step specification and so on.
+- In the generated tests, add the steps of the Gherkin notation as comments right before the implementation of the respective step in the test. So there is a comment with a step specification, then some go code, then potentially another comment with a step specification, and so on.
 - Do not create tests for the "cmd" package.
 
 ### Test naming conventions

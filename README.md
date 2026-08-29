@@ -49,6 +49,21 @@ For the development of the project, the following tools are needed:
 - ANTLR
 
 <details>
+<summary>Setup Ubuntu</summary>
+
+<br />
+
+Download the ANTLR Jar file into the `.tools` directory:
+
+```sh
+mkdir -p .tools
+curl -sSL -o .tools/antlr-4.13.2-complete.jar \
+    https://www.antlr.org/download/antlr-4.13.2-complete.jar
+```
+
+</details>
+
+<details>
 <summary>Setup macOS</summary>
 
 <br />
@@ -59,6 +74,9 @@ brew install antlr
 ```
 
 </details>
+
+
+
 
 ### Run tests
 

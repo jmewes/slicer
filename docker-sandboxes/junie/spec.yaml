@@ -1,0 +1,31 @@
+schemaVersion: "1"
+kind: sandbox
+name: junie
+displayName: Junie
+description: JetBrains' agentic coding CLI for the terminal.
+
+extends: shell
+
+commands:
+  install:
+    - command: "curl -fsSL https://junie.jetbrains.com/install.sh | bash"
+      user: "1000"
+    - command: |
+        sudo apt-get update -qq
+        sudo snap install go --classic
+        sudo apt-get install -y python3 python3-pip pipx openjdk-25-jdk-headless
+      user: "1000"
+
+network:
+  allowedDomains:
+    - "*."
+
+sandbox:
+  entrypoint:
+    run: ["/bin/sh", "-c", "exec junie"]
+
+agentContext: |
+  ## Sandbox environment
+  You are running inside a Docker sandbox for the Slicer project.
+  The workspace is mounted read-write; installed packages and containers
+  stay inside the sandbox and are discarded when it is removed.

@@ -132,13 +132,21 @@ gh issue view ${ISSUE_NUMBER} --json url
 
 - [Cucumber](https://cucumber.io/)
 
-**Agentic coding tools and practices**
+**Structured-Prompt-Driven Developmnet (SPDD)**
 
+- [Structured-Prompt-Driven Development (SPDD) | Wei Zhang, Jessie Jie Xia | martinfowler.com](https://martinfowler.com/articles/structured-prompt-driven)
+
+**Specification-driven development (SDD)**
+
+- [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl | Birgitta Böckeler | martinfowler.com](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
 - [GitHub Spec Kit](https://github.github.com/spec-kit/)
 - [OpenSpec](https://openspec.dev/)
 - [BMAD Method](https://docs.bmad-method.org/)
 - [Spec-Driven Development | addyosmani/agent-skills](https://github.com/addyosmani/agent-skills/blob/main/skills/spec-driven-development/SKILL.md)
-- [Structured-Prompt-Driven Development (SPDD) | Wei Zhang, Jessie Jie Xia | martinfowler.com](https://martinfowler.com/articles/structured-prompt-driven)
+
+**Agentic software development frameworks**
+
+- [adSCAILE](https://www.adesso.de/en/impulse/adscaile/index.jsp)
 - [AI Unified Process (AIUP)](https://unifiedprocess.ai/)
 
 **Annotated Textual Descriptions of Processes (ATDP)**

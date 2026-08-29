@@ -13,6 +13,8 @@ commands:
     - command: |
         sudo apt-get update -qq
         sudo snap install go --classic
+        sudo apt-get install -y python3 python3-pip
+        pip3 install antlr4-tools
       user: "1000"
 
 network:
@@ -20,7 +22,6 @@ network:
     - "*."
 
 sandbox:
-  aiFilename: AGENTS.md
   entrypoint:
     run: ["/bin/sh", "-c", "exec junie"]
 

@@ -27,6 +27,7 @@ suite
 suiteKeyword
     : DESCRIBE
     | IT
+    | FIT
     | BEFOREEACH
     ;
 
@@ -68,6 +69,7 @@ fillerToken
     | ARROW
     | DESCRIBE
     | IT
+    | FIT
     | BEFOREEACH
     | OTHER
     ;
@@ -78,6 +80,7 @@ argFillerToken
     | ARROW
     | DESCRIBE
     | IT
+    | FIT
     | BEFOREEACH
     | OTHER
     ;
@@ -86,6 +89,7 @@ argFillerToken
 
 DESCRIBE   : 'describe' ;
 IT         : 'it' ;
+FIT        : 'fit' ;
 BEFOREEACH : 'beforeEach' ;
 
 LPAREN : '(' ;
@@ -111,8 +115,8 @@ BLOCK_COMMENT : '/*' .*? '*/'        -> channel(HIDDEN) ;
 WS : [ \t\r\n]+ -> skip ;
 
 // Identifiers. Placed after the keyword tokens so `describe` / `it` /
-// `beforeEach` match as their dedicated token. Combined identifiers such as
-// `fit` / `xit` are matched as a single IDENT here, which naturally excludes
+// `beforeEach` / `fit` match as their dedicated token. Combined identifiers
+// such as `xit` are matched as a single IDENT here, which naturally excludes
 // them from suite recognition (removes the fragile isIdentChar hack).
 IDENT : [a-zA-Z_$] [a-zA-Z_$0-9]* ;
 

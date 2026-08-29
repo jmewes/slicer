@@ -1,4 +1,4 @@
-// Code generated from SpecGrammar.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from SpecGrammar.g4 by ANTLR 4.13.2. DO NOT EDIT.
 
 package specantlr // SpecGrammar
 import (
@@ -32,12 +32,12 @@ var SpecGrammarParserStaticData struct {
 func specgrammarParserInit() {
 	staticData := &SpecGrammarParserStaticData
 	staticData.LiteralNames = []string{
-		"", "'describe'", "'it'", "'fit'", "'beforeEach'", "'('", "')'", "'{'",
-		"'}'", "','", "'=>'",
+		"", "'describe'", "'it'", "'fit'", "'xit'", "'beforeEach'", "'('", "')'",
+		"'{'", "'}'", "','", "'=>'",
 	}
 	staticData.SymbolicNames = []string{
-		"", "DESCRIBE", "IT", "FIT", "BEFOREEACH", "LPAREN", "RPAREN", "LBRACE",
-		"RBRACE", "COMMA", "ARROW", "STRING", "LINE_COMMENT", "BLOCK_COMMENT",
+		"", "DESCRIBE", "IT", "FIT", "XIT", "BEFOREEACH", "LPAREN", "RPAREN",
+		"LBRACE", "RBRACE", "COMMA", "ARROW", "STRING", "LINE_COMMENT", "BLOCK_COMMENT",
 		"WS", "IDENT", "OTHER",
 	}
 	staticData.RuleNames = []string{
@@ -46,7 +46,7 @@ func specgrammarParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 16, 82, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 17, 82, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 1, 0, 5,
 		0, 22, 8, 0, 10, 0, 12, 0, 25, 9, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
 		3, 1, 33, 8, 1, 1, 2, 1, 2, 1, 2, 5, 2, 38, 8, 2, 10, 2, 12, 2, 41, 9,
@@ -54,8 +54,8 @@ func specgrammarParserInit() {
 		1, 5, 1, 5, 5, 5, 56, 8, 5, 10, 5, 12, 5, 59, 9, 5, 1, 5, 1, 5, 1, 6, 1,
 		6, 5, 6, 65, 8, 6, 10, 6, 12, 6, 68, 9, 6, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7,
 		1, 7, 3, 7, 76, 8, 7, 1, 8, 1, 8, 1, 9, 1, 9, 1, 9, 0, 0, 10, 0, 2, 4,
-		6, 8, 10, 12, 14, 16, 18, 0, 3, 1, 0, 1, 4, 3, 0, 1, 4, 9, 11, 15, 16,
-		3, 0, 1, 4, 9, 10, 15, 16, 85, 0, 23, 1, 0, 0, 0, 2, 32, 1, 0, 0, 0, 4,
+		6, 8, 10, 12, 14, 16, 18, 0, 3, 1, 0, 1, 5, 3, 0, 1, 5, 10, 12, 16, 17,
+		3, 0, 1, 5, 10, 11, 16, 17, 85, 0, 23, 1, 0, 0, 0, 2, 32, 1, 0, 0, 0, 4,
 		34, 1, 0, 0, 0, 6, 44, 1, 0, 0, 0, 8, 51, 1, 0, 0, 0, 10, 53, 1, 0, 0,
 		0, 12, 62, 1, 0, 0, 0, 14, 75, 1, 0, 0, 0, 16, 77, 1, 0, 0, 0, 18, 79,
 		1, 0, 0, 0, 20, 22, 3, 2, 1, 0, 21, 20, 1, 0, 0, 0, 22, 25, 1, 0, 0, 0,
@@ -63,20 +63,20 @@ func specgrammarParserInit() {
 		0, 0, 0, 26, 27, 5, 0, 0, 1, 27, 1, 1, 0, 0, 0, 28, 33, 3, 4, 2, 0, 29,
 		33, 3, 10, 5, 0, 30, 33, 3, 12, 6, 0, 31, 33, 3, 16, 8, 0, 32, 28, 1, 0,
 		0, 0, 32, 29, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 32, 31, 1, 0, 0, 0, 33, 3,
-		1, 0, 0, 0, 34, 35, 3, 6, 3, 0, 35, 39, 5, 5, 0, 0, 36, 38, 3, 8, 4, 0,
+		1, 0, 0, 0, 34, 35, 3, 6, 3, 0, 35, 39, 5, 6, 0, 0, 36, 38, 3, 8, 4, 0,
 		37, 36, 1, 0, 0, 0, 38, 41, 1, 0, 0, 0, 39, 37, 1, 0, 0, 0, 39, 40, 1,
-		0, 0, 0, 40, 42, 1, 0, 0, 0, 41, 39, 1, 0, 0, 0, 42, 43, 5, 6, 0, 0, 43,
-		5, 1, 0, 0, 0, 44, 45, 7, 0, 0, 0, 45, 7, 1, 0, 0, 0, 46, 52, 5, 11, 0,
+		0, 0, 0, 40, 42, 1, 0, 0, 0, 41, 39, 1, 0, 0, 0, 42, 43, 5, 7, 0, 0, 43,
+		5, 1, 0, 0, 0, 44, 45, 7, 0, 0, 0, 45, 7, 1, 0, 0, 0, 46, 52, 5, 12, 0,
 		0, 47, 52, 3, 10, 5, 0, 48, 52, 3, 4, 2, 0, 49, 52, 3, 12, 6, 0, 50, 52,
 		3, 18, 9, 0, 51, 46, 1, 0, 0, 0, 51, 47, 1, 0, 0, 0, 51, 48, 1, 0, 0, 0,
-		51, 49, 1, 0, 0, 0, 51, 50, 1, 0, 0, 0, 52, 9, 1, 0, 0, 0, 53, 57, 5, 7,
+		51, 49, 1, 0, 0, 0, 51, 50, 1, 0, 0, 0, 52, 9, 1, 0, 0, 0, 53, 57, 5, 8,
 		0, 0, 54, 56, 3, 2, 1, 0, 55, 54, 1, 0, 0, 0, 56, 59, 1, 0, 0, 0, 57, 55,
 		1, 0, 0, 0, 57, 58, 1, 0, 0, 0, 58, 60, 1, 0, 0, 0, 59, 57, 1, 0, 0, 0,
-		60, 61, 5, 8, 0, 0, 61, 11, 1, 0, 0, 0, 62, 66, 5, 5, 0, 0, 63, 65, 3,
+		60, 61, 5, 9, 0, 0, 61, 11, 1, 0, 0, 0, 62, 66, 5, 6, 0, 0, 63, 65, 3,
 		14, 7, 0, 64, 63, 1, 0, 0, 0, 65, 68, 1, 0, 0, 0, 66, 64, 1, 0, 0, 0, 66,
-		67, 1, 0, 0, 0, 67, 69, 1, 0, 0, 0, 68, 66, 1, 0, 0, 0, 69, 70, 5, 6, 0,
+		67, 1, 0, 0, 0, 67, 69, 1, 0, 0, 0, 68, 66, 1, 0, 0, 0, 69, 70, 5, 7, 0,
 		0, 70, 13, 1, 0, 0, 0, 71, 76, 3, 10, 5, 0, 72, 76, 3, 12, 6, 0, 73, 76,
-		5, 11, 0, 0, 74, 76, 3, 18, 9, 0, 75, 71, 1, 0, 0, 0, 75, 72, 1, 0, 0,
+		5, 12, 0, 0, 74, 76, 3, 18, 9, 0, 75, 71, 1, 0, 0, 0, 75, 72, 1, 0, 0,
 		0, 75, 73, 1, 0, 0, 0, 75, 74, 1, 0, 0, 0, 76, 15, 1, 0, 0, 0, 77, 78,
 		7, 1, 0, 0, 78, 17, 1, 0, 0, 0, 79, 80, 7, 2, 0, 0, 80, 19, 1, 0, 0, 0,
 		7, 23, 32, 39, 51, 57, 66, 75,
@@ -121,19 +121,20 @@ const (
 	SpecGrammarParserDESCRIBE      = 1
 	SpecGrammarParserIT            = 2
 	SpecGrammarParserFIT           = 3
-	SpecGrammarParserBEFOREEACH    = 4
-	SpecGrammarParserLPAREN        = 5
-	SpecGrammarParserRPAREN        = 6
-	SpecGrammarParserLBRACE        = 7
-	SpecGrammarParserRBRACE        = 8
-	SpecGrammarParserCOMMA         = 9
-	SpecGrammarParserARROW         = 10
-	SpecGrammarParserSTRING        = 11
-	SpecGrammarParserLINE_COMMENT  = 12
-	SpecGrammarParserBLOCK_COMMENT = 13
-	SpecGrammarParserWS            = 14
-	SpecGrammarParserIDENT         = 15
-	SpecGrammarParserOTHER         = 16
+	SpecGrammarParserXIT           = 4
+	SpecGrammarParserBEFOREEACH    = 5
+	SpecGrammarParserLPAREN        = 6
+	SpecGrammarParserRPAREN        = 7
+	SpecGrammarParserLBRACE        = 8
+	SpecGrammarParserRBRACE        = 9
+	SpecGrammarParserCOMMA         = 10
+	SpecGrammarParserARROW         = 11
+	SpecGrammarParserSTRING        = 12
+	SpecGrammarParserLINE_COMMENT  = 13
+	SpecGrammarParserBLOCK_COMMENT = 14
+	SpecGrammarParserWS            = 15
+	SpecGrammarParserIDENT         = 16
+	SpecGrammarParserOTHER         = 17
 )
 
 // SpecGrammarParser rules.
@@ -274,7 +275,7 @@ func (p *SpecGrammarParser) Program() (localctx IProgramContext) {
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&102078) != 0 {
+	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&204158) != 0 {
 		{
 			p.SetState(20)
 			p.Element()
@@ -653,7 +654,7 @@ func (p *SpecGrammarParser) Suite() (localctx ISuiteContext) {
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&102078) != 0 {
+	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&204158) != 0 {
 		{
 			p.SetState(36)
 			p.SuiteArg()
@@ -699,6 +700,7 @@ type ISuiteKeywordContext interface {
 	DESCRIBE() antlr.TerminalNode
 	IT() antlr.TerminalNode
 	FIT() antlr.TerminalNode
+	XIT() antlr.TerminalNode
 	BEFOREEACH() antlr.TerminalNode
 
 	// IsSuiteKeywordContext differentiates from other interfaces.
@@ -749,6 +751,10 @@ func (s *SuiteKeywordContext) FIT() antlr.TerminalNode {
 	return s.GetToken(SpecGrammarParserFIT, 0)
 }
 
+func (s *SuiteKeywordContext) XIT() antlr.TerminalNode {
+	return s.GetToken(SpecGrammarParserXIT, 0)
+}
+
 func (s *SuiteKeywordContext) BEFOREEACH() antlr.TerminalNode {
 	return s.GetToken(SpecGrammarParserBEFOREEACH, 0)
 }
@@ -781,7 +787,7 @@ func (p *SpecGrammarParser) SuiteKeyword() (localctx ISuiteKeywordContext) {
 		p.SetState(44)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&30) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&62) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -1141,7 +1147,7 @@ func (p *SpecGrammarParser) Block() (localctx IBlockContext) {
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&102078) != 0 {
+	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&204158) != 0 {
 		{
 			p.SetState(54)
 			p.Element()
@@ -1313,7 +1319,7 @@ func (p *SpecGrammarParser) ParenGroup() (localctx IParenGroupContext) {
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&102078) != 0 {
+	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&204158) != 0 {
 		{
 			p.SetState(63)
 			p.ParenContent()
@@ -1502,7 +1508,7 @@ func (p *SpecGrammarParser) ParenContent() (localctx IParenContentContext) {
 			}
 		}
 
-	case SpecGrammarParserDESCRIBE, SpecGrammarParserIT, SpecGrammarParserFIT, SpecGrammarParserBEFOREEACH, SpecGrammarParserCOMMA, SpecGrammarParserARROW, SpecGrammarParserIDENT, SpecGrammarParserOTHER:
+	case SpecGrammarParserDESCRIBE, SpecGrammarParserIT, SpecGrammarParserFIT, SpecGrammarParserXIT, SpecGrammarParserBEFOREEACH, SpecGrammarParserCOMMA, SpecGrammarParserARROW, SpecGrammarParserIDENT, SpecGrammarParserOTHER:
 		p.EnterOuterAlt(localctx, 4)
 		{
 			p.SetState(74)
@@ -1542,6 +1548,7 @@ type IFillerTokenContext interface {
 	DESCRIBE() antlr.TerminalNode
 	IT() antlr.TerminalNode
 	FIT() antlr.TerminalNode
+	XIT() antlr.TerminalNode
 	BEFOREEACH() antlr.TerminalNode
 	OTHER() antlr.TerminalNode
 
@@ -1609,6 +1616,10 @@ func (s *FillerTokenContext) FIT() antlr.TerminalNode {
 	return s.GetToken(SpecGrammarParserFIT, 0)
 }
 
+func (s *FillerTokenContext) XIT() antlr.TerminalNode {
+	return s.GetToken(SpecGrammarParserXIT, 0)
+}
+
 func (s *FillerTokenContext) BEFOREEACH() antlr.TerminalNode {
 	return s.GetToken(SpecGrammarParserBEFOREEACH, 0)
 }
@@ -1645,7 +1656,7 @@ func (p *SpecGrammarParser) FillerToken() (localctx IFillerTokenContext) {
 		p.SetState(77)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&101918) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&203838) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -1680,6 +1691,7 @@ type IArgFillerTokenContext interface {
 	DESCRIBE() antlr.TerminalNode
 	IT() antlr.TerminalNode
 	FIT() antlr.TerminalNode
+	XIT() antlr.TerminalNode
 	BEFOREEACH() antlr.TerminalNode
 	OTHER() antlr.TerminalNode
 
@@ -1743,6 +1755,10 @@ func (s *ArgFillerTokenContext) FIT() antlr.TerminalNode {
 	return s.GetToken(SpecGrammarParserFIT, 0)
 }
 
+func (s *ArgFillerTokenContext) XIT() antlr.TerminalNode {
+	return s.GetToken(SpecGrammarParserXIT, 0)
+}
+
 func (s *ArgFillerTokenContext) BEFOREEACH() antlr.TerminalNode {
 	return s.GetToken(SpecGrammarParserBEFOREEACH, 0)
 }
@@ -1779,7 +1795,7 @@ func (p *SpecGrammarParser) ArgFillerToken() (localctx IArgFillerTokenContext) {
 		p.SetState(79)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&99870) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&199742) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)

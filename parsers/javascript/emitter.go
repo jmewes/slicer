@@ -27,6 +27,7 @@ const (
 	frameDescribe   = "describe"
 	frameIt         = "it"
 	frameFit        = "fit"
+	frameXit        = "xit"
 	frameBeforeEach = "beforeEach"
 )
 

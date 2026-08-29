@@ -11,12 +11,10 @@ commands:
     - command: "curl -fsSL https://junie.jetbrains.com/install.sh | bash"
       user: "1000"
 
-credentials:
-  - name: junie
-    env:
-      - JUNIE_API_KEY
-      - JUNIE_BASE_URL
-    proxyManaged: false
+environment:
+  variables:
+    JUNIE_API_KEY: ""
+    JUNIE_BASE_URL: ""
 
 network:
   allowedDomains:
@@ -26,7 +24,7 @@ network:
 sandbox:
   aiFilename: AGENTS.md
   entrypoint:
-    run: junie --auth="$JUNIE_API_KEY"
+    run: ["/bin/sh", "-c", "exec junie --auth=\"$JUNIE_API_KEY\""]
 
 agentContext: |
   ## Sandbox environment

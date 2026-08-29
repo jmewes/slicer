@@ -1,0 +1,38 @@
+schemaVersion: "1"
+kind: sandbox
+name: junie
+displayName: Junie
+description: JetBrains' agentic coding CLI for the terminal.
+
+extends: shell
+
+commands:
+  install:
+    - command: "curl -fsSL https://junie.jetbrains.com/install.sh | bash"
+      user: "1000"
+
+credentials:
+  - name: junie
+    env:
+      - JUNIE_API_KEY
+      - JUNIE_BASE_URL
+    proxyManaged: false
+
+network:
+  allowedDomains:
+    - junie.jetbrains.com
+    - "*.jetbrains.com"
+
+sandbox:
+  aiFilename: AGENTS.md
+  entrypoint:
+    run: junie --auth="$JUNIE_API_KEY"
+
+agentContext: |
+  ## Sandbox environment
+  You are running inside a Docker sandbox for the Slicer project.
+  The workspace is mounted read-write; installed packages and containers
+  stay inside the sandbox and are discarded when it is removed.
+  A custom Junie API key (and, if configured, a custom OpenAI-compatible
+  base URL) is provided via the JUNIE_API_KEY / JUNIE_BASE_URL environment
+  variables — never print or persist these values to disk.

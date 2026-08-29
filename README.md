@@ -74,6 +74,10 @@ Each framework (e.g. Jasmine, vitest) has its own parser. So, if support for fur
 
 See [docs/create-new-parser.md](./docs/create-new-parser.md) for details.
 
+### Agentic coding with Docker Sandboxes
+
+For a safe, isolated workflow to run Claude Code or JetBrains Junie against this repository, see [docs/docker-sandboxes.md](./docs/docker-sandboxes.md).
+
 ### Regenerating the ANTLR spec parser
 
 The `parsers` directory has a subdirectory for each supported source language (currently `javascript` for Jasmine and `vitest` for Vitest). There is a go-package for the respective language and another subdirectory for the ANTLR-generated parser.

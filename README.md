@@ -40,10 +40,6 @@ slicer rev --parser <jasmine|vitest> --source <path> --target <path> [--relaxed]
 
 ## Development
 
-### Agentic coding with Docker Sandboxes
-
-For a safe, isolated workflow to run Claude Code or JetBrains Junie against this repository, see [docs/docker-sandboxes.md](./docs/docker-sandboxes.md).
-
 ### Dependencies
 
 For the development of the project, the following tools are needed:
@@ -77,8 +73,6 @@ go test ./...
 Each framework (e.g. Jasmine, vitest) has its own parser. So, if support for further frameworks should be added, a new parser should be created.
 
 See [docs/create-new-parser.md](./docs/create-new-parser.md) for details.
-
-
 
 ### Regenerating the ANTLR spec parser
 

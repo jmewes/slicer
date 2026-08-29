@@ -10,27 +10,10 @@ commands:
   install:
     - command: "curl -fsSL https://junie.jetbrains.com/install.sh | bash"
       user: "1000"
-    # Junie is a JVM-based CLI. The sandbox's TLS-intercepting proxy CA is
-    # trusted by the OS, but the JVM ships its own separate trust store, so
-    # without this step Junie fails to reach JetBrains services with
-    # "Secure connection to JetBrains services failed". Installing
-    # ca-certificates-java keeps a Java-compatible trust store in sync with
-    # the OS trust store, and we then copy it over any other cacerts files
-    # found on disk (e.g. a private JBR bundled by the Junie installer).
     - command: |
         sudo apt-get update -qq
-        sudo apt-get install -y -qq ca-certificates-java
-        sudo update-ca-certificates -f
-        for cacerts in $(sudo find / -xdev -name cacerts 2>/dev/null); do
-          [ "$cacerts" = "/etc/ssl/certs/java/cacerts" ] && continue
-          sudo cp -f /etc/ssl/certs/java/cacerts "$cacerts" 2>/dev/null || true
-        done
+        sudo snap install go --classic
       user: "1000"
-
-environment:
-  variables:
-    JUNIE_API_KEY: ""
-    JUNIE_BASE_URL: ""
 
 network:
   allowedDomains:
@@ -39,13 +22,10 @@ network:
 sandbox:
   aiFilename: AGENTS.md
   entrypoint:
-    run: ["/bin/sh", "-c", "exec junie --auth=\"$JUNIE_API_KEY\""]
+    run: ["/bin/sh", "-c", "exec junie"]
 
 agentContext: |
   ## Sandbox environment
   You are running inside a Docker sandbox for the Slicer project.
   The workspace is mounted read-write; installed packages and containers
   stay inside the sandbox and are discarded when it is removed.
-  A custom Junie API key (and, if configured, a custom OpenAI-compatible
-  base URL) is provided via the JUNIE_API_KEY / JUNIE_BASE_URL environment
-  variables — never print or persist these values to disk.

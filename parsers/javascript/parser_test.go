@@ -262,6 +262,30 @@ func TestParseSpecFile_mustParseSpecFile_multi_line_describe(t *testing.T) {
 	}
 }
 
+func TestParseSpecFile_arithmetic(t *testing.T) {
+	// Given a test file with an arithmetic setup function and background Given comment
+	specPath := "testdata/arithmetic.spec.ts"
+
+	// When the spec file gets parsed
+	docs, err := ParseSpecFile(specPath, false)
+	if err != nil {
+		t.Logf("ParseSpecFile error: %v", err)
+	}
+	t.Logf("Docs length: %d", len(docs))
+	for i, d := range docs {
+		t.Logf("Doc %d feature name: %s", i, d.Feature.Name)
+	}
+
+	// Then the feature is parsed successfully
+	if len(docs) != 1 {
+		t.Fatalf("Expected 1 GherkinDocument, got %d", len(docs))
+	}
+	doc := docs[0]
+	if doc.Feature.Name != "Calculator" {
+		t.Errorf("Expected Feature name 'Calculator', got '%s'", doc.Feature.Name)
+	}
+}
+
 type parseOption func(*parseConfig)
 
 type parseConfig struct {

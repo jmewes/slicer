@@ -75,9 +75,6 @@ brew install antlr
 
 </details>
 
-
-
-
 ### Run tests
 
 The unit tests of the project can be executed with the following command:
@@ -161,6 +158,7 @@ gh issue view ${ISSUE_NUMBER} --json url
 - [OpenSpec](https://openspec.dev/)
 - [BMAD Method](https://docs.bmad-method.org/)
 - [Spec-Driven Development | addyosmani/agent-skills](https://github.com/addyosmani/agent-skills/blob/main/skills/spec-driven-development/SKILL.md)
+- [dhinojosa/oreilly-spec-driven-development](https://github.com/dhinojosa/oreilly-spec-driven-development/blob/main/AGENTS.md) is an example for definiting Gherkin feature files in a separate cucumber acceptance test module. This is similar to the approach suggested to be used with `slicer`, but `slicer` assumes the Gherkin feature files embedded in the tests, with the encoding of the respective testing framework. Another difference is that with `slicer`, there is not so much of a need for a planning mode. The planning is done by the developer. The agent might just be requested to do the coding. Then the developer refactors the AI generated code. In so small cycles that instructions like the "five-minute limit" are not needed.
 
 **Agentic software development frameworks**
 

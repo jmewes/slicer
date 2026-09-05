@@ -1,9 +1,9 @@
+.env.sbx
 .junie/memory
 .junie/plans
 .junie/tmp
 .claude
 .tools
-
 .DS_Store
 
 # If you prefer the allow list template instead of the deny list, see community template:

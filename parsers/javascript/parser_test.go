@@ -79,6 +79,42 @@ func TestParseSpecFile_fit_only_tag(t *testing.T) {
 	}
 }
 
+func TestParseSpecFile_xit_ignore_tag(t *testing.T) {
+	// Given a test file that has a "describe" block
+	// And an "it" block
+	// And a disabled "xit" block
+	specPath := "testdata/disabled-xit.spec.ts"
+
+	// When the Gherkin document is parsed
+	docs, err := ParseSpecFile(specPath, false)
+	if err != nil {
+		t.Fatalf("ParseSpecFile failed: %v", err)
+	}
+
+	if len(docs) != 1 {
+		t.Fatalf("Expected 1 GherkinDocument, got %d", len(docs))
+	}
+
+	doc := docs[0]
+
+	// Then both blocks are mapped to Scenarios
+	if len(doc.Feature.Children) != 2 {
+		t.Fatalf("Expected 2 scenarios, got %d", len(doc.Feature.Children))
+	}
+
+	// And the "it" scenario has no tags
+	itScenario := doc.Feature.Children[0].Scenario
+	if len(itScenario.Tags) != 0 {
+		t.Errorf("Expected no tags on the 'it' scenario, got %v", itScenario.Tags)
+	}
+
+	// And the "xit" scenario is tagged with "@ignore"
+	xitScenario := doc.Feature.Children[1].Scenario
+	if len(xitScenario.Tags) != 1 || xitScenario.Tags[0].Name != "@ignore" {
+		t.Errorf("Expected the 'xit' scenario to be tagged with '@ignore', got %v", xitScenario.Tags)
+	}
+}
+
 func TestParseSpecFile_relaxed_enabled(t *testing.T) {
 	// Given a test file with a test without Gherkin steps
 	// And a test with Gherkin steps

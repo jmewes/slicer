@@ -130,7 +130,7 @@ func (v *specVisitor) visitSuite(s specantlr.ISuiteContext) {
 			parent.children = append(parent.children, fr)
 		}
 
-	case frameIt, frameFit:
+	case frameIt, frameFit, frameXit:
 		if name == "" {
 			return
 		}
@@ -143,6 +143,9 @@ func (v *specVisitor) visitSuite(s specantlr.ISuiteContext) {
 				}
 				if kw == frameFit {
 					scenario.Tags = append(scenario.Tags, &messages.Tag{Name: "@only"})
+				}
+				if kw == frameXit {
+					scenario.Tags = append(scenario.Tags, &messages.Tag{Name: "@ignore"})
 				}
 				enclosing.scenarios = append(enclosing.scenarios, scenario)
 			}
@@ -228,6 +231,9 @@ func suiteKind(k specantlr.ISuiteKeywordContext) string {
 	}
 	if k.FIT() != nil {
 		return frameFit
+	}
+	if k.XIT() != nil {
+		return frameXit
 	}
 	if k.BEFOREEACH() != nil {
 		return frameBeforeEach

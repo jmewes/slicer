@@ -174,3 +174,5 @@ https://github.com/jmewes/slicer/pulls
 
 - https://cucumber.io/docs/gherkin/reference/
 - https://github.com/cucumber/gherkin
+- [Extracting the Domain Knowledge (Puriﬁcation) | Domain-Driven Transformation | learning.oreilly.com](https://learning.oreilly.com/library/view/domain-driven-transformation/9798341640108/ch10.html#sec-substep-1-2)
+
